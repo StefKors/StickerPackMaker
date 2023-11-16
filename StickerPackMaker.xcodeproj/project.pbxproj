@@ -18,8 +18,6 @@
 		8A161B6A2B016F05007F9F57 /* PhotoLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B692B016F05007F9F57 /* PhotoLibrary.swift */; };
 		8A556FD82B06A5020078DE03 /* StickerCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A556FD72B06A5020078DE03 /* StickerCollectionView.swift */; };
 		8A556FDA2B06A83C0078DE03 /* StickerEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A556FD92B06A83C0078DE03 /* StickerEffect.swift */; };
-		8A7728942B06C2540086D840 /* MediaCore in Frameworks */ = {isa = PBXBuildFile; productRef = 8A7728932B06C2540086D840 /* MediaCore */; };
-		8A7728962B06C2540086D840 /* MediaSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 8A7728952B06C2540086D840 /* MediaSwiftUI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,8 +42,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8A7728942B06C2540086D840 /* MediaCore in Frameworks */,
-				8A7728962B06C2540086D840 /* MediaSwiftUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -129,8 +125,6 @@
 			);
 			name = StickerPackMaker;
 			packageProductDependencies = (
-				8A7728932B06C2540086D840 /* MediaCore */,
-				8A7728952B06C2540086D840 /* MediaSwiftUI */,
 			);
 			productName = StickerPackMaker;
 			productReference = 8A161B452B016715007F9F57 /* StickerPackMaker.app */;
@@ -161,7 +155,6 @@
 			);
 			mainGroup = 8A161B3C2B016715007F9F57;
 			packageReferences = (
-				8A7728922B06C2540086D840 /* XCRemoteSwiftPackageReference "Media" */,
 			);
 			productRefGroup = 8A161B462B016715007F9F57 /* Products */;
 			projectDirPath = "";
@@ -409,30 +402,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		8A7728922B06C2540086D840 /* XCRemoteSwiftPackageReference "Media" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:crelies/Media.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		8A7728932B06C2540086D840 /* MediaCore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 8A7728922B06C2540086D840 /* XCRemoteSwiftPackageReference "Media" */;
-			productName = MediaCore;
-		};
-		8A7728952B06C2540086D840 /* MediaSwiftUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 8A7728922B06C2540086D840 /* XCRemoteSwiftPackageReference "Media" */;
-			productName = MediaSwiftUI;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8A161B3D2B016715007F9F57 /* Project object */;
 }

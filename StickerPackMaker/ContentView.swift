@@ -10,16 +10,15 @@ import SwiftData
 import OSLog
 import Photos
 import Vision
+import MediaCore
 
 final class Sticker: Identifiable {
     var id: String
-    var asset: PHAsset
     var image: UIImage
     var pets: [String]
 
-    init(asset: PHAsset, image: UIImage, pets: [String]) {
+    init(image: UIImage, pets: [String]) {
         self.id = UUID().uuidString
-        self.asset = asset
         self.image = image
         self.pets = pets
     }
@@ -68,8 +67,10 @@ class StickerCollection: ObservableObject {
         if let limit {
             progress.totalUnitCount = Int64(limit)
         }
+
         let fetchOptions = PHFetchOptions()
         let collections = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumUserLibrary, options: fetchOptions)
+        print("collections count: \(collections.count)")
         guard let collection = collections.firstObject else {
             print("failed to load photos")
             return []
@@ -106,7 +107,7 @@ class StickerCollection: ObservableObject {
                     if !pets.isEmpty {
                         let stickerImage = StickerEffect.generate(usingInputImage: image)
                         if let stickerImage {
-                            stickers.append(Sticker(asset: asset, image: stickerImage, pets: pets))
+                            stickers.append(Sticker(image: stickerImage, pets: pets))
                         }
                     }
                 }
@@ -180,7 +181,7 @@ struct ContentView: View {
             return
         }
 
-        self.stickerCollection.stickers = await stickerCollection.loadPhotos(limit: 100)
+        self.stickerCollection.stickers = await stickerCollection.loadPhotos(limit: nil)
         self.stickerCollection.isPhotosLoaded.toggle()
     }
 
