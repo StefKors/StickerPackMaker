@@ -11,38 +11,6 @@ import SwiftData
 import SwiftUI
 import Vision
 
-final class Sticker {
-    var id: String
-    var asset: PHAsset
-    var image: UIImage
-    var pets: [String]
-
-    init(asset: PHAsset, image: UIImage, pets: [String]) {
-        self.id = UUID().uuidString
-        self.asset = asset
-        self.image = image
-        self.pets = pets
-    }
-
-    static func detectPet(sourceImage: UIImage) -> [String] {
-        guard let image = sourceImage.cgImage else { return [] }
-        let inputImage = CIImage.init(cgImage: image)
-        let animalRequest = VNRecognizeAnimalsRequest()
-        let requestHandler = VNImageRequestHandler.init(ciImage: inputImage, options: [:])
-        try? requestHandler.perform([animalRequest])
-
-        let identifiers = animalRequest.results?.compactMap({ result in
-            return result.labels.compactMap({ label in
-                return label.identifier
-            })
-        }).flatMap { $0 }
-
-        return identifiers ?? []
-    }
-}
-
-
-
 //class ProcessPhotoCollection {
 //
 //    func run(collection: PhotoAssetCollection, cache: CachedImageManager) async -> [Sticker] {

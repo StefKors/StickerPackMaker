@@ -9,39 +9,119 @@ import SwiftUI
 import SwiftData
 import OSLog
 import Photos
+import Vision
+
+final class Sticker: Identifiable {
+    var id: String
+    var asset: PHAsset
+    var image: UIImage
+    var pets: [String]
+
+    init(asset: PHAsset, image: UIImage, pets: [String]) {
+        self.id = UUID().uuidString
+        self.asset = asset
+        self.image = image
+        self.pets = pets
+    }
+
+    static func detectPet(sourceImage: UIImage) -> [String] {
+        guard let image = sourceImage.cgImage else { return [] }
+        let inputImage = CIImage.init(cgImage: image)
+        let animalRequest = VNRecognizeAnimalsRequest()
+        let requestHandler = VNImageRequestHandler.init(ciImage: inputImage, options: [:])
+        try? requestHandler.perform([animalRequest])
+
+        let identifiers = animalRequest.results?.compactMap({ result in
+            return result.labels.compactMap({ label in
+                return label.identifier
+            })
+        }).flatMap { $0 }
+
+        return identifiers ?? []
+    }
+}
+
+
+
+class StickerCollection: ObservableObject {
+    @Published var isPhotosLoaded = false
+    @Published var progress = Progress()
+    @Published var stickers: [Sticker] = []
+
+    let cache = CachedImageManager()
+
+
+    func loadPhotos() async -> [Sticker] {
+        let fetchOptions = PHFetchOptions()
+        let collections = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumUserLibrary, options: fetchOptions)
+        guard let collection = collections.firstObject else {
+            print("failed to load photos")
+            return []
+        }
+
+        let fetchOptionsAsset = PHFetchOptions()
+        fetchOptionsAsset.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+        let fetchResult = PHAsset.fetchAssets(in: collection, options: fetchOptionsAsset)
+        let photoCollection = PhotoAssetCollection(fetchResult)
+
+        var assets: [PHAsset] = []
+        var stickers: [Sticker] = []
+
+        photoCollection.fetchResult.enumerateObjects { (object, count, stop) in
+            assets.append(object)
+        }
+
+        let subsetAssets =  assets // Array(assets[0..<100])
+
+        progress.totalUnitCount = Int64(subsetAssets.endIndex)
+
+        for asset in subsetAssets {
+            for await image in await cache.requestImage(for: asset) {
+                if let image {
+                    let pets = Sticker.detectPet(sourceImage: image)
+                    if !pets.isEmpty {
+                        let stickerImage = StickerEffect.generate(usingInputImage: image)
+                        if let stickerImage {
+                            stickers.append(Sticker(asset: asset, image: stickerImage, pets: pets))
+                        }
+                    }
+                }
+            }
+            progress.completedUnitCount += 1
+        }
+
+        return stickers
+    }
+
+}
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @StateObject private var  photoCollection = PhotoCollection(smartAlbum: .smartAlbumUserLibrary)
+    //    @StateObject private var photoCollection = PhotoCollection(smartAlbum: .smartAlbumUserLibrary)
+    @StateObject private var stickerCollection = StickerCollection()
 
-    @State var thumbnailImage: Image?
-    @State var isPhotosLoaded = false
-    @State var stickers: [Sticker] = []
 
     @Query private var items: [Item]
 
 
     var body: some View {
         NavigationView {
-            VStack {
-                Text("stickers \(stickers.count)")
-                PhotoCollectionView(photoCollection: photoCollection)
+            if stickerCollection.isPhotosLoaded {
+                VStack {
+                    Text("Sticker Library has loaded \(stickerCollection.stickers.count.description)")
+                    StickerCollectionView(stickers: stickerCollection.stickers)
+                }
+                    .transition(.slide)
+            } else {
+                VStack {
+                    Text("Updating Sticker Library")
+                    ProgressView(stickerCollection.progress)
+                        .progressViewStyle(.linear)
+                }
+                .transition(.slide)
             }
-
-//            NavigationLink {
-//                PhotoCollectionView(photoCollection: photoCollection)
-//            } label: {
-//                Label {
-//                    Text("Gallery")
-//                } icon: {
-//                    if let thumbnailImage {
-//                        ThumbnailView(image: thumbnailImage)
-//                    } else {
-//                        Image(systemName: "photo.on.rectangle.angled")
-//                    }
-//                }
-//            }
         }
+        .animation(.snappy, value: stickerCollection.isPhotosLoaded)
         .task {
             await self.loadPhotos()
         }
@@ -50,7 +130,7 @@ struct ContentView: View {
 
 
     func loadPhotos() async {
-        guard !isPhotosLoaded else { return }
+        guard !stickerCollection.isPhotosLoaded else { return }
 
         let authorized = await PhotoLibrary.checkAuthorization()
         guard authorized else {
@@ -58,54 +138,11 @@ struct ContentView: View {
             return
         }
 
-        Task {
-            do {
-                try await self.photoCollection.load()
-//                await self.loadThumbnail()
-//                print("starting fetching stickers \(photoCollection.photoAssets.endIndex.description)")
-//                self.stickers = await run(collection: photoCollection.photoAssets, cache: photoCollection.cache)
-//                print("finished fetching stickers")
-            } catch let error {
-                logger.error("Failed to load photo collection: \(error.localizedDescription)")
-            }
-            self.isPhotosLoaded = true
-        }
+
+        self.stickerCollection.stickers = await stickerCollection.loadPhotos()
+        self.stickerCollection.isPhotosLoaded.toggle()
     }
 
-
-    func run(collection: PhotoAssetCollection, cache: CachedImageManager) async -> [Sticker] {
-        var assets: [PHAsset] = []
-        var stickers: [Sticker] = []
-
-        collection.fetchResult.enumerateObjects { (object, count, stop) in
-            assets.append(object)
-        }
-
-        for (index, asset) in assets.enumerated() {
-            print("fetching: \(index.description)/\(collection.endIndex.description)")
-            for await image in await cache.requestImage(for: asset) {
-                if let image {
-                    let pets = Sticker.detectPet(sourceImage: image)
-                    if !pets.isEmpty {
-                        stickers.append(Sticker(asset: asset, image: image, pets: pets))
-                    }
-                }
-            }
-        }
-
-        return stickers
-    }
-
-    func loadThumbnail() async {
-        guard let asset = photoCollection.photoAssets.first  else { return }
-        await photoCollection.cache.requestImage(for: asset, targetSize: CGSize(width: 256, height: 256))  { result in
-            if let result = result {
-                Task { @MainActor in
-                    self.thumbnailImage = result.image
-                }
-            }
-        }
-    }
 
     private func addItem() {
         withAnimation {

@@ -22,6 +22,8 @@
 		8A161B6C2B016F7B007F9F57 /* PhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B6B2B016F7B007F9F57 /* PhotoView.swift */; };
 		8A161B6E2B016F96007F9F57 /* PhotoItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B6D2B016F96007F9F57 /* PhotoItemView.swift */; };
 		8A161B712B017ECA007F9F57 /* EffectsPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B702B017ECA007F9F57 /* EffectsPipeline.swift */; };
+		8A556FD82B06A5020078DE03 /* StickerCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A556FD72B06A5020078DE03 /* StickerCollectionView.swift */; };
+		8A556FDA2B06A83C0078DE03 /* StickerEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A556FD92B06A83C0078DE03 /* StickerEffect.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +45,8 @@
 		8A161B6B2B016F7B007F9F57 /* PhotoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoView.swift; sourceTree = "<group>"; };
 		8A161B6D2B016F96007F9F57 /* PhotoItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoItemView.swift; sourceTree = "<group>"; };
 		8A161B702B017ECA007F9F57 /* EffectsPipeline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EffectsPipeline.swift; sourceTree = "<group>"; };
+		8A556FD72B06A5020078DE03 /* StickerCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerCollectionView.swift; sourceTree = "<group>"; };
+		8A556FD92B06A83C0078DE03 /* StickerEffect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerEffect.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,9 +116,11 @@
 			isa = PBXGroup;
 			children = (
 				8A161B702B017ECA007F9F57 /* EffectsPipeline.swift */,
+				8A556FD92B06A83C0078DE03 /* StickerEffect.swift */,
 				8A161B652B016E49007F9F57 /* ThumbnailView.swift */,
 				8A161B6B2B016F7B007F9F57 /* PhotoView.swift */,
 				8A161B632B016E2F007F9F57 /* PhotoCollectionView.swift */,
+				8A556FD72B06A5020078DE03 /* StickerCollectionView.swift */,
 				8A161B6D2B016F96007F9F57 /* PhotoItemView.swift */,
 			);
 			path = Components;
@@ -192,7 +198,9 @@
 			files = (
 				8A161B6E2B016F96007F9F57 /* PhotoItemView.swift in Sources */,
 				8A161B4B2B016715007F9F57 /* ContentView.swift in Sources */,
+				8A556FD82B06A5020078DE03 /* StickerCollectionView.swift in Sources */,
 				8A161B5D2B016DA4007F9F57 /* PhotoAssetCollection.swift in Sources */,
+				8A556FDA2B06A83C0078DE03 /* StickerEffect.swift in Sources */,
 				8A161B4D2B016715007F9F57 /* Item.swift in Sources */,
 				8A161B6C2B016F7B007F9F57 /* PhotoView.swift in Sources */,
 				8A161B662B016E49007F9F57 /* ThumbnailView.swift in Sources */,

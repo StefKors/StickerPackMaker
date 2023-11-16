@@ -132,9 +132,15 @@ actor CachedImageManager {
 
     func requestImage(for asset: PHAsset) -> AsyncStream<UIImage?> {
         AsyncStream { continuation in
-            requestUIImage(for: asset, targetSize: CGSize(width: 1024, height: 1024)) { result in
-                continuation.yield(result?.image)
+            requestUIImage(for: asset, targetSize: CGSize(width: 4024, height: 4024)) { result in
+                if let image = result?.image {
+                    continuation.yield(image)
+                } else {
+                    continuation.finish()
+                }
             }
+
+            continuation.finish()
         }
 //        await withCheckedContinuation { continuation in
 //            requestUIImage(for: asset, targetSize: CGSize(width: 1024, height: 1024)) { result in
