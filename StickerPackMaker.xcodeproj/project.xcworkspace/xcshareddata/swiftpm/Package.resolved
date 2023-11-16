@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "media",
+      "kind" : "remoteSourceControl",
+      "location" : "git@github.com:crelies/Media.git",
+      "state" : {
+        "revision" : "84acbe8e4f5c62e304582d5a2d32edfaa509f839",
+        "version" : "3.0.0"
+      }
+    }
+  ],
+  "version" : 2
+}

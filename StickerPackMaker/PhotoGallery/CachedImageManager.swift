@@ -61,56 +61,6 @@ actor CachedImageManager {
     }
 
     @discardableResult
-    func requestImage(for asset: PhotoAsset, targetSize: CGSize, completion: @escaping ((image: Image?, isLowerQuality: Bool)?) -> Void) -> PHImageRequestID? {
-        guard let phAsset = asset.phAsset else {
-            completion(nil)
-            return nil
-        }
-
-        let requestID = imageManager.requestImage(for: phAsset, targetSize: targetSize, contentMode: imageContentMode, options: requestOptions) { image, info in
-            if let error = info?[PHImageErrorKey] as? Error {
-                logger.error("CachedImageManager requestImage error: \(error.localizedDescription)")
-                completion(nil)
-            } else if let cancelled = (info?[PHImageCancelledKey] as? NSNumber)?.boolValue, cancelled {
-                logger.debug("CachedImageManager request canceled")
-                completion(nil)
-            } else if let image = image {
-                let isLowerQualityImage = (info?[PHImageResultIsDegradedKey] as? NSNumber)?.boolValue ?? false
-                let result = (image: Image(uiImage: image), isLowerQuality: isLowerQualityImage)
-                completion(result)
-            } else {
-                completion(nil)
-            }
-        }
-        return requestID
-    }
-
-    @discardableResult
-    func requestUIImage(for asset: PhotoAsset, targetSize: CGSize, completion: @escaping ((image: UIImage?, isLowerQuality: Bool)?) -> Void) -> PHImageRequestID? {
-        guard let phAsset = asset.phAsset else {
-            completion(nil)
-            return nil
-        }
-
-        let requestID = imageManager.requestImage(for: phAsset, targetSize: targetSize, contentMode: imageContentMode, options: requestOptions) { image, info in
-            if let error = info?[PHImageErrorKey] as? Error {
-                logger.error("CachedImageManager requestImage error: \(error.localizedDescription)")
-                completion(nil)
-            } else if let cancelled = (info?[PHImageCancelledKey] as? NSNumber)?.boolValue, cancelled {
-                logger.debug("CachedImageManager request canceled")
-                completion(nil)
-            } else if let image = image {
-                let isLowerQualityImage = (info?[PHImageResultIsDegradedKey] as? NSNumber)?.boolValue ?? false
-                let result = (image: image, isLowerQuality: isLowerQualityImage)
-                completion(result)
-            } else {
-                completion(nil)
-            }
-        }
-        return requestID
-    }
-
-    @discardableResult
     func requestUIImage(for asset: PHAsset, targetSize: CGSize, completion: @escaping ((image: UIImage?, isLowerQuality: Bool)?) -> Void) -> PHImageRequestID? {
         let requestID = imageManager.requestImage(for: asset, targetSize: targetSize, contentMode: imageContentMode, options: requestOptions) { image, info in
             if let error = info?[PHImageErrorKey] as? Error {
@@ -121,6 +71,7 @@ actor CachedImageManager {
                 completion(nil)
             } else if let image = image {
                 let isLowerQualityImage = (info?[PHImageResultIsDegradedKey] as? NSNumber)?.boolValue ?? false
+                print("isLowerQualityImage \(isLowerQualityImage.description)")
                 let result = (image: image, isLowerQuality: isLowerQualityImage)
                 completion(result)
             } else {
@@ -132,7 +83,7 @@ actor CachedImageManager {
 
     func requestImage(for asset: PHAsset) -> AsyncStream<UIImage?> {
         AsyncStream { continuation in
-            requestUIImage(for: asset, targetSize: CGSize(width: 4024, height: 4024)) { result in
+            requestUIImage(for: asset, targetSize: CGSize(width: 1024, height: 1024)) { result in
                 if let image = result?.image {
                     continuation.yield(image)
                 } else {
@@ -149,22 +100,6 @@ actor CachedImageManager {
 //        }
     }
 
-    func detectPet(sourceImage: UIImage) -> [String]? {
-        guard let image = sourceImage.cgImage else { return nil }
-        let inputImage = CIImage.init(cgImage: image)
-        let animalRequest = VNRecognizeAnimalsRequest()
-        let requestHandler = VNImageRequestHandler.init(ciImage: inputImage, options: [:])
-        try? requestHandler.perform([animalRequest])
-
-        let identifiers = animalRequest.results?.compactMap({ result in
-            return result.labels.compactMap({ label in
-                return label.identifier
-            })
-        }).flatMap { $0 }
-
-        return identifiers
-
-    }
 
 //    @discardableResult
 //    func requestImage(for asset: PhotoAsset, targetSize: CGSize, completion: @escaping ((image: Image?, isLowerQuality: Bool)?) -> Void) -> PHImageRequestID? {

@@ -12,18 +12,14 @@
 		8A161B4D2B016715007F9F57 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B4C2B016715007F9F57 /* Item.swift */; };
 		8A161B4F2B016716007F9F57 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A161B4E2B016716007F9F57 /* Assets.xcassets */; };
 		8A161B522B016716007F9F57 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A161B512B016716007F9F57 /* Preview Assets.xcassets */; };
-		8A161B5B2B016D3A007F9F57 /* PhotoCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B5A2B016D3A007F9F57 /* PhotoCollection.swift */; };
-		8A161B5D2B016DA4007F9F57 /* PhotoAssetCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B5C2B016DA4007F9F57 /* PhotoAssetCollection.swift */; };
 		8A161B5F2B016DB2007F9F57 /* PhotoAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B5E2B016DB2007F9F57 /* PhotoAsset.swift */; };
 		8A161B612B016DCC007F9F57 /* CachedImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B602B016DCC007F9F57 /* CachedImageManager.swift */; };
-		8A161B642B016E2F007F9F57 /* PhotoCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B632B016E2F007F9F57 /* PhotoCollectionView.swift */; };
 		8A161B662B016E49007F9F57 /* ThumbnailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B652B016E49007F9F57 /* ThumbnailView.swift */; };
 		8A161B6A2B016F05007F9F57 /* PhotoLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B692B016F05007F9F57 /* PhotoLibrary.swift */; };
-		8A161B6C2B016F7B007F9F57 /* PhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B6B2B016F7B007F9F57 /* PhotoView.swift */; };
-		8A161B6E2B016F96007F9F57 /* PhotoItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B6D2B016F96007F9F57 /* PhotoItemView.swift */; };
-		8A161B712B017ECA007F9F57 /* EffectsPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B702B017ECA007F9F57 /* EffectsPipeline.swift */; };
 		8A556FD82B06A5020078DE03 /* StickerCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A556FD72B06A5020078DE03 /* StickerCollectionView.swift */; };
 		8A556FDA2B06A83C0078DE03 /* StickerEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A556FD92B06A83C0078DE03 /* StickerEffect.swift */; };
+		8A7728942B06C2540086D840 /* MediaCore in Frameworks */ = {isa = PBXBuildFile; productRef = 8A7728932B06C2540086D840 /* MediaCore */; };
+		8A7728962B06C2540086D840 /* MediaSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 8A7728952B06C2540086D840 /* MediaSwiftUI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,16 +31,10 @@
 		8A161B512B016716007F9F57 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		8A161B532B016716007F9F57 /* StickerPackMaker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StickerPackMaker.entitlements; sourceTree = "<group>"; };
 		8A161B542B016716007F9F57 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8A161B5A2B016D3A007F9F57 /* PhotoCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollection.swift; sourceTree = "<group>"; };
-		8A161B5C2B016DA4007F9F57 /* PhotoAssetCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoAssetCollection.swift; sourceTree = "<group>"; };
 		8A161B5E2B016DB2007F9F57 /* PhotoAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoAsset.swift; sourceTree = "<group>"; };
 		8A161B602B016DCC007F9F57 /* CachedImageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CachedImageManager.swift; sourceTree = "<group>"; };
-		8A161B632B016E2F007F9F57 /* PhotoCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCollectionView.swift; sourceTree = "<group>"; };
 		8A161B652B016E49007F9F57 /* ThumbnailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbnailView.swift; sourceTree = "<group>"; };
 		8A161B692B016F05007F9F57 /* PhotoLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibrary.swift; sourceTree = "<group>"; };
-		8A161B6B2B016F7B007F9F57 /* PhotoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoView.swift; sourceTree = "<group>"; };
-		8A161B6D2B016F96007F9F57 /* PhotoItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoItemView.swift; sourceTree = "<group>"; };
-		8A161B702B017ECA007F9F57 /* EffectsPipeline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EffectsPipeline.swift; sourceTree = "<group>"; };
 		8A556FD72B06A5020078DE03 /* StickerCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerCollectionView.swift; sourceTree = "<group>"; };
 		8A556FD92B06A83C0078DE03 /* StickerEffect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerEffect.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -54,6 +44,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A7728942B06C2540086D840 /* MediaCore in Frameworks */,
+				8A7728962B06C2540086D840 /* MediaSwiftUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,9 +96,7 @@
 			isa = PBXGroup;
 			children = (
 				8A161B692B016F05007F9F57 /* PhotoLibrary.swift */,
-				8A161B5A2B016D3A007F9F57 /* PhotoCollection.swift */,
 				8A161B602B016DCC007F9F57 /* CachedImageManager.swift */,
-				8A161B5C2B016DA4007F9F57 /* PhotoAssetCollection.swift */,
 				8A161B5E2B016DB2007F9F57 /* PhotoAsset.swift */,
 			);
 			path = PhotoGallery;
@@ -115,13 +105,9 @@
 		8A161B6F2B017320007F9F57 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				8A161B702B017ECA007F9F57 /* EffectsPipeline.swift */,
 				8A556FD92B06A83C0078DE03 /* StickerEffect.swift */,
 				8A161B652B016E49007F9F57 /* ThumbnailView.swift */,
-				8A161B6B2B016F7B007F9F57 /* PhotoView.swift */,
-				8A161B632B016E2F007F9F57 /* PhotoCollectionView.swift */,
 				8A556FD72B06A5020078DE03 /* StickerCollectionView.swift */,
-				8A161B6D2B016F96007F9F57 /* PhotoItemView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -142,6 +128,10 @@
 			dependencies = (
 			);
 			name = StickerPackMaker;
+			packageProductDependencies = (
+				8A7728932B06C2540086D840 /* MediaCore */,
+				8A7728952B06C2540086D840 /* MediaSwiftUI */,
+			);
 			productName = StickerPackMaker;
 			productReference = 8A161B452B016715007F9F57 /* StickerPackMaker.app */;
 			productType = "com.apple.product-type.application";
@@ -170,6 +160,9 @@
 				Base,
 			);
 			mainGroup = 8A161B3C2B016715007F9F57;
+			packageReferences = (
+				8A7728922B06C2540086D840 /* XCRemoteSwiftPackageReference "Media" */,
+			);
 			productRefGroup = 8A161B462B016715007F9F57 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -196,21 +189,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8A161B6E2B016F96007F9F57 /* PhotoItemView.swift in Sources */,
 				8A161B4B2B016715007F9F57 /* ContentView.swift in Sources */,
 				8A556FD82B06A5020078DE03 /* StickerCollectionView.swift in Sources */,
-				8A161B5D2B016DA4007F9F57 /* PhotoAssetCollection.swift in Sources */,
 				8A556FDA2B06A83C0078DE03 /* StickerEffect.swift in Sources */,
 				8A161B4D2B016715007F9F57 /* Item.swift in Sources */,
-				8A161B6C2B016F7B007F9F57 /* PhotoView.swift in Sources */,
 				8A161B662B016E49007F9F57 /* ThumbnailView.swift in Sources */,
 				8A161B5F2B016DB2007F9F57 /* PhotoAsset.swift in Sources */,
 				8A161B6A2B016F05007F9F57 /* PhotoLibrary.swift in Sources */,
-				8A161B5B2B016D3A007F9F57 /* PhotoCollection.swift in Sources */,
-				8A161B642B016E2F007F9F57 /* PhotoCollectionView.swift in Sources */,
 				8A161B492B016715007F9F57 /* StickerPackMakerApp.swift in Sources */,
 				8A161B612B016DCC007F9F57 /* CachedImageManager.swift in Sources */,
-				8A161B712B017ECA007F9F57 /* EffectsPipeline.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -422,6 +409,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8A7728922B06C2540086D840 /* XCRemoteSwiftPackageReference "Media" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:crelies/Media.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8A7728932B06C2540086D840 /* MediaCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8A7728922B06C2540086D840 /* XCRemoteSwiftPackageReference "Media" */;
+			productName = MediaCore;
+		};
+		8A7728952B06C2540086D840 /* MediaSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8A7728922B06C2540086D840 /* XCRemoteSwiftPackageReference "Media" */;
+			productName = MediaSwiftUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8A161B3D2B016715007F9F57 /* Project object */;
 }

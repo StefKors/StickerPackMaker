@@ -48,10 +48,26 @@ class StickerCollection: ObservableObject {
     @Published var progress = Progress()
     @Published var stickers: [Sticker] = []
 
-    let cache = CachedImageManager()
+    private let imageManager = PHCachingImageManager()
+
+    var cache: [String: UIImage?] = [:]
+
+    private var targetSize = CGSize(width: 1024, height: 1024)
+    private var imageContentMode = PHImageContentMode.aspectFit
+    private lazy var requestOptions: PHImageRequestOptions = {
+        let options = PHImageRequestOptions()
+        options.deliveryMode = .opportunistic
+        return options
+    }()
 
 
-    func loadPhotos() async -> [Sticker] {
+
+    func loadPhotos(limit: Int?) async -> [Sticker] {
+        imageManager.allowsCachingHighQualityImages = false
+
+        if let limit {
+            progress.totalUnitCount = Int64(limit)
+        }
         let fetchOptions = PHFetchOptions()
         let collections = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumUserLibrary, options: fetchOptions)
         guard let collection = collections.firstObject else {
@@ -59,24 +75,32 @@ class StickerCollection: ObservableObject {
             return []
         }
 
+        if let limit {
+            progress.totalUnitCount = Int64(limit)
+        } else {
+            progress.totalUnitCount = Int64(collection.estimatedAssetCount)
+        }
+
         let fetchOptionsAsset = PHFetchOptions()
         fetchOptionsAsset.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
         let fetchResult = PHAsset.fetchAssets(in: collection, options: fetchOptionsAsset)
-        let photoCollection = PhotoAssetCollection(fetchResult)
 
-        var assets: [PHAsset] = []
         var stickers: [Sticker] = []
 
-        photoCollection.fetchResult.enumerateObjects { (object, count, stop) in
-            assets.append(object)
+        // Limit count by some number
+        var lastIndex = fetchResult.count
+        if let limit {
+            lastIndex = min(limit, fetchResult.count)
         }
 
-        let subsetAssets =  assets // Array(assets[0..<100])
+        let subsetAssets = 0..<lastIndex
 
         progress.totalUnitCount = Int64(subsetAssets.endIndex)
 
-        for asset in subsetAssets {
-            for await image in await cache.requestImage(for: asset) {
+        for index in subsetAssets {
+            let asset = fetchResult.object(at: index)
+
+            for await image in self.requestImage(for: asset) {
                 if let image {
                     let pets = Sticker.detectPet(sourceImage: image)
                     if !pets.isEmpty {
@@ -93,11 +117,29 @@ class StickerCollection: ObservableObject {
         return stickers
     }
 
+    func requestImage(for asset: PHAsset) -> AsyncStream<UIImage?> {
+        AsyncStream { continuation in
+            let _ = imageManager.requestImage(for: asset, targetSize: targetSize, contentMode: imageContentMode, options: requestOptions) { image, info in
+                if let error = info?[PHImageErrorKey] as? Error {
+                    logger.error("CachedImageManager requestImage error: \(error.localizedDescription)")
+                    continuation.yield(nil)
+                } else if let cancelled = (info?[PHImageCancelledKey] as? NSNumber)?.boolValue, cancelled {
+                    logger.debug("CachedImageManager request canceled")
+                    continuation.yield(nil)
+                } else if let image = image {
+                    continuation.yield(image)
+                } else {
+                    continuation.yield(nil)
+                }
+            }
+
+            continuation.finish()
+        }
+    }
 }
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    //    @StateObject private var photoCollection = PhotoCollection(smartAlbum: .smartAlbumUserLibrary)
     @StateObject private var stickerCollection = StickerCollection()
 
 
@@ -111,7 +153,7 @@ struct ContentView: View {
                     Text("Sticker Library has loaded \(stickerCollection.stickers.count.description)")
                     StickerCollectionView(stickers: stickerCollection.stickers)
                 }
-                    .transition(.slide)
+                .transition(.slide)
             } else {
                 VStack {
                     Text("Updating Sticker Library")
@@ -138,8 +180,7 @@ struct ContentView: View {
             return
         }
 
-
-        self.stickerCollection.stickers = await stickerCollection.loadPhotos()
+        self.stickerCollection.stickers = await stickerCollection.loadPhotos(limit: 100)
         self.stickerCollection.isPhotosLoaded.toggle()
     }
 

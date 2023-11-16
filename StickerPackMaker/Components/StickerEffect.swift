@@ -11,6 +11,23 @@ import CoreImage.CIFilterBuiltins
 import UIKit
 import Vision
 
+/// Presets for the subjects' visual effects.
+enum Effect: String, Equatable, CaseIterable {
+    case none = "None"
+    case highlight = "Highlight"
+    case bokeh = "Bokeh Halo"
+    case noir = "Noir"
+}
+
+/// Presets for the background's visual effects.
+enum Background: String, Equatable, CaseIterable {
+    case original = "Original"
+    case transparent = "Transparent"
+    //    case sunset = "Sunset"
+    case greenScreen = "Green Screen"
+}
+
+
 /// A class that produces and publishes the postprocessed output.
 final class StickerEffect {
     private var processingQueue = DispatchQueue(label: "EffectsProcessing")
