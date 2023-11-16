@@ -12,6 +12,16 @@
 		8A161B4D2B016715007F9F57 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B4C2B016715007F9F57 /* Item.swift */; };
 		8A161B4F2B016716007F9F57 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A161B4E2B016716007F9F57 /* Assets.xcassets */; };
 		8A161B522B016716007F9F57 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A161B512B016716007F9F57 /* Preview Assets.xcassets */; };
+		8A161B5B2B016D3A007F9F57 /* PhotoCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B5A2B016D3A007F9F57 /* PhotoCollection.swift */; };
+		8A161B5D2B016DA4007F9F57 /* PhotoAssetCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B5C2B016DA4007F9F57 /* PhotoAssetCollection.swift */; };
+		8A161B5F2B016DB2007F9F57 /* PhotoAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B5E2B016DB2007F9F57 /* PhotoAsset.swift */; };
+		8A161B612B016DCC007F9F57 /* CachedImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B602B016DCC007F9F57 /* CachedImageManager.swift */; };
+		8A161B642B016E2F007F9F57 /* PhotoCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B632B016E2F007F9F57 /* PhotoCollectionView.swift */; };
+		8A161B662B016E49007F9F57 /* ThumbnailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B652B016E49007F9F57 /* ThumbnailView.swift */; };
+		8A161B6A2B016F05007F9F57 /* PhotoLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B692B016F05007F9F57 /* PhotoLibrary.swift */; };
+		8A161B6C2B016F7B007F9F57 /* PhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B6B2B016F7B007F9F57 /* PhotoView.swift */; };
+		8A161B6E2B016F96007F9F57 /* PhotoItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B6D2B016F96007F9F57 /* PhotoItemView.swift */; };
+		8A161B712B017ECA007F9F57 /* EffectsPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B702B017ECA007F9F57 /* EffectsPipeline.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +33,16 @@
 		8A161B512B016716007F9F57 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		8A161B532B016716007F9F57 /* StickerPackMaker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StickerPackMaker.entitlements; sourceTree = "<group>"; };
 		8A161B542B016716007F9F57 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8A161B5A2B016D3A007F9F57 /* PhotoCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollection.swift; sourceTree = "<group>"; };
+		8A161B5C2B016DA4007F9F57 /* PhotoAssetCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoAssetCollection.swift; sourceTree = "<group>"; };
+		8A161B5E2B016DB2007F9F57 /* PhotoAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoAsset.swift; sourceTree = "<group>"; };
+		8A161B602B016DCC007F9F57 /* CachedImageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CachedImageManager.swift; sourceTree = "<group>"; };
+		8A161B632B016E2F007F9F57 /* PhotoCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCollectionView.swift; sourceTree = "<group>"; };
+		8A161B652B016E49007F9F57 /* ThumbnailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbnailView.swift; sourceTree = "<group>"; };
+		8A161B692B016F05007F9F57 /* PhotoLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibrary.swift; sourceTree = "<group>"; };
+		8A161B6B2B016F7B007F9F57 /* PhotoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoView.swift; sourceTree = "<group>"; };
+		8A161B6D2B016F96007F9F57 /* PhotoItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoItemView.swift; sourceTree = "<group>"; };
+		8A161B702B017ECA007F9F57 /* EffectsPipeline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EffectsPipeline.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +77,8 @@
 			children = (
 				8A161B482B016715007F9F57 /* StickerPackMakerApp.swift */,
 				8A161B4A2B016715007F9F57 /* ContentView.swift */,
+				8A161B6F2B017320007F9F57 /* Components */,
+				8A161B622B016DDF007F9F57 /* PhotoGallery */,
 				8A161B4C2B016715007F9F57 /* Item.swift */,
 				8A161B4E2B016716007F9F57 /* Assets.xcassets */,
 				8A161B532B016716007F9F57 /* StickerPackMaker.entitlements */,
@@ -72,6 +94,30 @@
 				8A161B512B016716007F9F57 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		8A161B622B016DDF007F9F57 /* PhotoGallery */ = {
+			isa = PBXGroup;
+			children = (
+				8A161B692B016F05007F9F57 /* PhotoLibrary.swift */,
+				8A161B5A2B016D3A007F9F57 /* PhotoCollection.swift */,
+				8A161B602B016DCC007F9F57 /* CachedImageManager.swift */,
+				8A161B5C2B016DA4007F9F57 /* PhotoAssetCollection.swift */,
+				8A161B5E2B016DB2007F9F57 /* PhotoAsset.swift */,
+			);
+			path = PhotoGallery;
+			sourceTree = "<group>";
+		};
+		8A161B6F2B017320007F9F57 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				8A161B702B017ECA007F9F57 /* EffectsPipeline.swift */,
+				8A161B652B016E49007F9F57 /* ThumbnailView.swift */,
+				8A161B6B2B016F7B007F9F57 /* PhotoView.swift */,
+				8A161B632B016E2F007F9F57 /* PhotoCollectionView.swift */,
+				8A161B6D2B016F96007F9F57 /* PhotoItemView.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -144,9 +190,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A161B6E2B016F96007F9F57 /* PhotoItemView.swift in Sources */,
 				8A161B4B2B016715007F9F57 /* ContentView.swift in Sources */,
+				8A161B5D2B016DA4007F9F57 /* PhotoAssetCollection.swift in Sources */,
 				8A161B4D2B016715007F9F57 /* Item.swift in Sources */,
+				8A161B6C2B016F7B007F9F57 /* PhotoView.swift in Sources */,
+				8A161B662B016E49007F9F57 /* ThumbnailView.swift in Sources */,
+				8A161B5F2B016DB2007F9F57 /* PhotoAsset.swift in Sources */,
+				8A161B6A2B016F05007F9F57 /* PhotoLibrary.swift in Sources */,
+				8A161B5B2B016D3A007F9F57 /* PhotoCollection.swift in Sources */,
+				8A161B642B016E2F007F9F57 /* PhotoCollectionView.swift in Sources */,
 				8A161B492B016715007F9F57 /* StickerPackMakerApp.swift in Sources */,
+				8A161B612B016DCC007F9F57 /* CachedImageManager.swift in Sources */,
+				8A161B712B017ECA007F9F57 /* EffectsPipeline.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,6 +341,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = StickerPackMaker/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "The app uses photo library access to create stickers from your pets";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -316,6 +373,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = StickerPackMaker/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "The app uses photo library access to create stickers from your pets";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

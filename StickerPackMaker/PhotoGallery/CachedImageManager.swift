@@ -1,0 +1,194 @@
+//
+//  PhotoCollection.swift
+//  StickerPackMaker
+//
+//  Created by Stef Kors on 12/11/2023.
+//
+
+import UIKit
+import Photos
+import SwiftUI
+import os.log
+import Vision
+import Foundation
+
+actor CachedImageManager {
+
+    private let imageManager = PHCachingImageManager()
+
+    private var imageContentMode = PHImageContentMode.aspectFit
+
+    enum CachedImageManagerError: LocalizedError {
+        case error(Error)
+        case cancelled
+        case failed
+    }
+
+    private var cachedAssetIdentifiers = [String : Bool]()
+
+    private lazy var requestOptions: PHImageRequestOptions = {
+        let options = PHImageRequestOptions()
+        options.deliveryMode = .opportunistic
+        return options
+    }()
+
+    init() {
+        imageManager.allowsCachingHighQualityImages = false
+    }
+
+    var cachedImageCount: Int {
+        cachedAssetIdentifiers.keys.count
+    }
+
+    func startCaching(for assets: [PhotoAsset], targetSize: CGSize) {
+        let phAssets = assets.compactMap { $0.phAsset }
+        phAssets.forEach {
+            cachedAssetIdentifiers[$0.localIdentifier] = true
+        }
+        imageManager.startCachingImages(for: phAssets, targetSize: targetSize, contentMode: imageContentMode, options: requestOptions)
+    }
+
+    func stopCaching(for assets: [PhotoAsset], targetSize: CGSize) {
+        let phAssets = assets.compactMap { $0.phAsset }
+        phAssets.forEach {
+            cachedAssetIdentifiers.removeValue(forKey: $0.localIdentifier)
+        }
+        imageManager.stopCachingImages(for: phAssets, targetSize: targetSize, contentMode: imageContentMode, options: requestOptions)
+    }
+
+    func stopCaching() {
+        imageManager.stopCachingImagesForAllAssets()
+    }
+
+    @discardableResult
+    func requestImage(for asset: PhotoAsset, targetSize: CGSize, completion: @escaping ((image: Image?, isLowerQuality: Bool)?) -> Void) -> PHImageRequestID? {
+        guard let phAsset = asset.phAsset else {
+            completion(nil)
+            return nil
+        }
+
+        let requestID = imageManager.requestImage(for: phAsset, targetSize: targetSize, contentMode: imageContentMode, options: requestOptions) { image, info in
+            if let error = info?[PHImageErrorKey] as? Error {
+                logger.error("CachedImageManager requestImage error: \(error.localizedDescription)")
+                completion(nil)
+            } else if let cancelled = (info?[PHImageCancelledKey] as? NSNumber)?.boolValue, cancelled {
+                logger.debug("CachedImageManager request canceled")
+                completion(nil)
+            } else if let image = image {
+                let isLowerQualityImage = (info?[PHImageResultIsDegradedKey] as? NSNumber)?.boolValue ?? false
+                let result = (image: Image(uiImage: image), isLowerQuality: isLowerQualityImage)
+                completion(result)
+            } else {
+                completion(nil)
+            }
+        }
+        return requestID
+    }
+
+    @discardableResult
+    func requestUIImage(for asset: PhotoAsset, targetSize: CGSize, completion: @escaping ((image: UIImage?, isLowerQuality: Bool)?) -> Void) -> PHImageRequestID? {
+        guard let phAsset = asset.phAsset else {
+            completion(nil)
+            return nil
+        }
+
+        let requestID = imageManager.requestImage(for: phAsset, targetSize: targetSize, contentMode: imageContentMode, options: requestOptions) { image, info in
+            if let error = info?[PHImageErrorKey] as? Error {
+                logger.error("CachedImageManager requestImage error: \(error.localizedDescription)")
+                completion(nil)
+            } else if let cancelled = (info?[PHImageCancelledKey] as? NSNumber)?.boolValue, cancelled {
+                logger.debug("CachedImageManager request canceled")
+                completion(nil)
+            } else if let image = image {
+                let isLowerQualityImage = (info?[PHImageResultIsDegradedKey] as? NSNumber)?.boolValue ?? false
+                let result = (image: image, isLowerQuality: isLowerQualityImage)
+                completion(result)
+            } else {
+                completion(nil)
+            }
+        }
+        return requestID
+    }
+
+    @discardableResult
+    func requestUIImage(for asset: PHAsset, targetSize: CGSize, completion: @escaping ((image: UIImage?, isLowerQuality: Bool)?) -> Void) -> PHImageRequestID? {
+        let requestID = imageManager.requestImage(for: asset, targetSize: targetSize, contentMode: imageContentMode, options: requestOptions) { image, info in
+            if let error = info?[PHImageErrorKey] as? Error {
+                logger.error("CachedImageManager requestImage error: \(error.localizedDescription)")
+                completion(nil)
+            } else if let cancelled = (info?[PHImageCancelledKey] as? NSNumber)?.boolValue, cancelled {
+                logger.debug("CachedImageManager request canceled")
+                completion(nil)
+            } else if let image = image {
+                let isLowerQualityImage = (info?[PHImageResultIsDegradedKey] as? NSNumber)?.boolValue ?? false
+                let result = (image: image, isLowerQuality: isLowerQualityImage)
+                completion(result)
+            } else {
+                completion(nil)
+            }
+        }
+        return requestID
+    }
+
+    func requestImage(for asset: PHAsset) -> AsyncStream<UIImage?> {
+        AsyncStream { continuation in
+            requestUIImage(for: asset, targetSize: CGSize(width: 1024, height: 1024)) { result in
+                continuation.yield(result?.image)
+            }
+        }
+//        await withCheckedContinuation { continuation in
+//            requestUIImage(for: asset, targetSize: CGSize(width: 1024, height: 1024)) { result in
+//                continuation.resume(returning: result?.image)
+//            }
+//        }
+    }
+
+    func detectPet(sourceImage: UIImage) -> [String]? {
+        guard let image = sourceImage.cgImage else { return nil }
+        let inputImage = CIImage.init(cgImage: image)
+        let animalRequest = VNRecognizeAnimalsRequest()
+        let requestHandler = VNImageRequestHandler.init(ciImage: inputImage, options: [:])
+        try? requestHandler.perform([animalRequest])
+
+        let identifiers = animalRequest.results?.compactMap({ result in
+            return result.labels.compactMap({ label in
+                return label.identifier
+            })
+        }).flatMap { $0 }
+
+        return identifiers
+
+    }
+
+//    @discardableResult
+//    func requestImage(for asset: PhotoAsset, targetSize: CGSize, completion: @escaping ((image: Image?, isLowerQuality: Bool)?) -> Void) -> PHImageRequestID? {
+//        guard let phAsset = asset.phAsset else {
+//            completion(nil)
+//            return nil
+//        }
+//
+//        let requestID = imageManager.requestImage(for: phAsset, targetSize: targetSize, contentMode: imageContentMode, options: requestOptions) { image, info in
+//            if let error = info?[PHImageErrorKey] as? Error {
+//                logger.error("CachedImageManager requestImage error: \(error.localizedDescription)")
+//                completion(nil)
+//            } else if let cancelled = (info?[PHImageCancelledKey] as? NSNumber)?.boolValue, cancelled {
+//                logger.debug("CachedImageManager request canceled")
+//                completion(nil)
+//            } else if let image = image {
+//                let isLowerQualityImage = (info?[PHImageResultIsDegradedKey] as? NSNumber)?.boolValue ?? false
+//                let result = (image: Image(uiImage: image), isLowerQuality: isLowerQualityImage)
+//                completion(result)
+//            } else {
+//                completion(nil)
+//            }
+//        }
+//        return requestID
+//    }
+
+    func cancelImageRequest(for requestID: PHImageRequestID) {
+        imageManager.cancelImageRequest(requestID)
+    }
+}
+
+fileprivate let logger = Logger(subsystem: "com.apple.swiftplaygroundscontent.capturingphotos", category: "CachedImageManager")
+

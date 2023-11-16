@@ -8,6 +8,8 @@
 import SwiftUI
 import SwiftData
 
+//        RENAME STICKY PET MAKER!!!!
+
 @main
 struct StickerPackMakerApp: App {
     var sharedModelContainer: ModelContainer = {
