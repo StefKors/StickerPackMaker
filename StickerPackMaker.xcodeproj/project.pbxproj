@@ -9,32 +9,38 @@
 /* Begin PBXBuildFile section */
 		8A161B492B016715007F9F57 /* StickerPackMakerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B482B016715007F9F57 /* StickerPackMakerApp.swift */; };
 		8A161B4B2B016715007F9F57 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B4A2B016715007F9F57 /* ContentView.swift */; };
-		8A161B4D2B016715007F9F57 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B4C2B016715007F9F57 /* Item.swift */; };
 		8A161B4F2B016716007F9F57 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A161B4E2B016716007F9F57 /* Assets.xcassets */; };
 		8A161B522B016716007F9F57 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A161B512B016716007F9F57 /* Preview Assets.xcassets */; };
-		8A161B5F2B016DB2007F9F57 /* PhotoAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B5E2B016DB2007F9F57 /* PhotoAsset.swift */; };
-		8A161B612B016DCC007F9F57 /* CachedImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B602B016DCC007F9F57 /* CachedImageManager.swift */; };
-		8A161B662B016E49007F9F57 /* ThumbnailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B652B016E49007F9F57 /* ThumbnailView.swift */; };
 		8A161B6A2B016F05007F9F57 /* PhotoLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B692B016F05007F9F57 /* PhotoLibrary.swift */; };
-		8A556FD82B06A5020078DE03 /* StickerCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A556FD72B06A5020078DE03 /* StickerCollectionView.swift */; };
+		8A556FD82B06A5020078DE03 /* StickersCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A556FD72B06A5020078DE03 /* StickersCollectionView.swift */; };
 		8A556FDA2B06A83C0078DE03 /* StickerEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A556FD92B06A83C0078DE03 /* StickerEffect.swift */; };
+		8A77289B2B0777F20086D840 /* MediaCore in Frameworks */ = {isa = PBXBuildFile; productRef = 8A77289A2B0777F20086D840 /* MediaCore */; };
+		8A77289D2B0777F20086D840 /* MediaSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 8A77289C2B0777F20086D840 /* MediaSwiftUI */; };
+		8A77289F2B0786EE0086D840 /* StickersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A77289E2B0786EE0086D840 /* StickersListView.swift */; };
+		8A7728A12B0787D30086D840 /* StickerDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7728A02B0787D30086D840 /* StickerDetailView.swift */; };
+		8A7728A32B0787F20086D840 /* StickerLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7728A22B0787F20086D840 /* StickerLabelView.swift */; };
+		8A7728A52B0788600086D840 /* Sticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7728A42B0788600086D840 /* Sticker.swift */; };
+		8A7728A82B078AF50086D840 /* PhotosImporterSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7728A72B078AF50086D840 /* PhotosImporterSheetView.swift */; };
+		8A7728AA2B07A0BC0086D840 /* UtilityExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7728A92B07A0BC0086D840 /* UtilityExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		8A161B452B016715007F9F57 /* StickerPackMaker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StickerPackMaker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A161B482B016715007F9F57 /* StickerPackMakerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerPackMakerApp.swift; sourceTree = "<group>"; };
 		8A161B4A2B016715007F9F57 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		8A161B4C2B016715007F9F57 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		8A161B4E2B016716007F9F57 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8A161B512B016716007F9F57 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		8A161B532B016716007F9F57 /* StickerPackMaker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StickerPackMaker.entitlements; sourceTree = "<group>"; };
 		8A161B542B016716007F9F57 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8A161B5E2B016DB2007F9F57 /* PhotoAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoAsset.swift; sourceTree = "<group>"; };
-		8A161B602B016DCC007F9F57 /* CachedImageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CachedImageManager.swift; sourceTree = "<group>"; };
-		8A161B652B016E49007F9F57 /* ThumbnailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbnailView.swift; sourceTree = "<group>"; };
 		8A161B692B016F05007F9F57 /* PhotoLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibrary.swift; sourceTree = "<group>"; };
-		8A556FD72B06A5020078DE03 /* StickerCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerCollectionView.swift; sourceTree = "<group>"; };
+		8A556FD72B06A5020078DE03 /* StickersCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickersCollectionView.swift; sourceTree = "<group>"; };
 		8A556FD92B06A83C0078DE03 /* StickerEffect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerEffect.swift; sourceTree = "<group>"; };
+		8A77289E2B0786EE0086D840 /* StickersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickersListView.swift; sourceTree = "<group>"; };
+		8A7728A02B0787D30086D840 /* StickerDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerDetailView.swift; sourceTree = "<group>"; };
+		8A7728A22B0787F20086D840 /* StickerLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerLabelView.swift; sourceTree = "<group>"; };
+		8A7728A42B0788600086D840 /* Sticker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sticker.swift; sourceTree = "<group>"; };
+		8A7728A72B078AF50086D840 /* PhotosImporterSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosImporterSheetView.swift; sourceTree = "<group>"; };
+		8A7728A92B07A0BC0086D840 /* UtilityExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +48,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A77289B2B0777F20086D840 /* MediaCore in Frameworks */,
+				8A77289D2B0777F20086D840 /* MediaSwiftUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -69,9 +77,9 @@
 			children = (
 				8A161B482B016715007F9F57 /* StickerPackMakerApp.swift */,
 				8A161B4A2B016715007F9F57 /* ContentView.swift */,
+				8A7728A92B07A0BC0086D840 /* UtilityExtensions.swift */,
+				8A7728A62B0788720086D840 /* SwiftDataModels */,
 				8A161B6F2B017320007F9F57 /* Components */,
-				8A161B622B016DDF007F9F57 /* PhotoGallery */,
-				8A161B4C2B016715007F9F57 /* Item.swift */,
 				8A161B4E2B016716007F9F57 /* Assets.xcassets */,
 				8A161B532B016716007F9F57 /* StickerPackMaker.entitlements */,
 				8A161B542B016716007F9F57 /* Info.plist */,
@@ -88,24 +96,26 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		8A161B622B016DDF007F9F57 /* PhotoGallery */ = {
-			isa = PBXGroup;
-			children = (
-				8A161B692B016F05007F9F57 /* PhotoLibrary.swift */,
-				8A161B602B016DCC007F9F57 /* CachedImageManager.swift */,
-				8A161B5E2B016DB2007F9F57 /* PhotoAsset.swift */,
-			);
-			path = PhotoGallery;
-			sourceTree = "<group>";
-		};
 		8A161B6F2B017320007F9F57 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				8A161B692B016F05007F9F57 /* PhotoLibrary.swift */,
+				8A7728A02B0787D30086D840 /* StickerDetailView.swift */,
 				8A556FD92B06A83C0078DE03 /* StickerEffect.swift */,
-				8A161B652B016E49007F9F57 /* ThumbnailView.swift */,
-				8A556FD72B06A5020078DE03 /* StickerCollectionView.swift */,
+				8A7728A22B0787F20086D840 /* StickerLabelView.swift */,
+				8A556FD72B06A5020078DE03 /* StickersCollectionView.swift */,
+				8A77289E2B0786EE0086D840 /* StickersListView.swift */,
+				8A7728A72B078AF50086D840 /* PhotosImporterSheetView.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		8A7728A62B0788720086D840 /* SwiftDataModels */ = {
+			isa = PBXGroup;
+			children = (
+				8A7728A42B0788600086D840 /* Sticker.swift */,
+			);
+			path = SwiftDataModels;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -125,6 +135,8 @@
 			);
 			name = StickerPackMaker;
 			packageProductDependencies = (
+				8A77289A2B0777F20086D840 /* MediaCore */,
+				8A77289C2B0777F20086D840 /* MediaSwiftUI */,
 			);
 			productName = StickerPackMaker;
 			productReference = 8A161B452B016715007F9F57 /* StickerPackMaker.app */;
@@ -155,6 +167,7 @@
 			);
 			mainGroup = 8A161B3C2B016715007F9F57;
 			packageReferences = (
+				8A7728992B0777F20086D840 /* XCRemoteSwiftPackageReference "Media" */,
 			);
 			productRefGroup = 8A161B462B016715007F9F57 /* Products */;
 			projectDirPath = "";
@@ -183,14 +196,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A161B4B2B016715007F9F57 /* ContentView.swift in Sources */,
-				8A556FD82B06A5020078DE03 /* StickerCollectionView.swift in Sources */,
+				8A556FD82B06A5020078DE03 /* StickersCollectionView.swift in Sources */,
+				8A77289F2B0786EE0086D840 /* StickersListView.swift in Sources */,
 				8A556FDA2B06A83C0078DE03 /* StickerEffect.swift in Sources */,
-				8A161B4D2B016715007F9F57 /* Item.swift in Sources */,
-				8A161B662B016E49007F9F57 /* ThumbnailView.swift in Sources */,
-				8A161B5F2B016DB2007F9F57 /* PhotoAsset.swift in Sources */,
+				8A7728A52B0788600086D840 /* Sticker.swift in Sources */,
+				8A7728A82B078AF50086D840 /* PhotosImporterSheetView.swift in Sources */,
+				8A7728A12B0787D30086D840 /* StickerDetailView.swift in Sources */,
+				8A7728AA2B07A0BC0086D840 /* UtilityExtensions.swift in Sources */,
 				8A161B6A2B016F05007F9F57 /* PhotoLibrary.swift in Sources */,
+				8A7728A32B0787F20086D840 /* StickerLabelView.swift in Sources */,
 				8A161B492B016715007F9F57 /* StickerPackMakerApp.swift in Sources */,
-				8A161B612B016DCC007F9F57 /* CachedImageManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,6 +417,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8A7728992B0777F20086D840 /* XCRemoteSwiftPackageReference "Media" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:crelies/Media.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8A77289A2B0777F20086D840 /* MediaCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8A7728992B0777F20086D840 /* XCRemoteSwiftPackageReference "Media" */;
+			productName = MediaCore;
+		};
+		8A77289C2B0777F20086D840 /* MediaSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8A7728992B0777F20086D840 /* XCRemoteSwiftPackageReference "Media" */;
+			productName = MediaSwiftUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8A161B3D2B016715007F9F57 /* Project object */;
 }

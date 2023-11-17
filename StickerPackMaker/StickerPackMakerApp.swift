@@ -9,12 +9,13 @@ import SwiftUI
 import SwiftData
 
 //        RENAME STICKY PET MAKER!!!!
+// VNDetectContoursRequest
 
 @main
 struct StickerPackMakerApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            Sticker.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 

@@ -1,5 +1,5 @@
 //
-//  PhotoCollection.swift
+//  StickersCollectionView.swift
 //  StickerPackMaker
 //
 //  Created by Stef Kors on 12/11/2023.
@@ -8,9 +8,10 @@
 import SwiftUI
 import os.log
 import Photos
+import SwiftData
 
-struct StickerCollectionView: View {
-    var stickers: [Sticker]
+struct StickersCollectionView: View {
+    @Query private var stickers: [Sticker] = []
 
     @Environment(\.displayScale) private var displayScale
 
@@ -31,9 +32,9 @@ struct StickerCollectionView: View {
             LazyVGrid(columns: columns, spacing: Self.itemSpacing) {
                 ForEach(stickers) { sticker in
                     NavigationLink {
-                        StickerView(sticker: sticker)
+                        StickerDetailView(sticker: sticker)
                     } label: {
-                        LabelStickerView(sticker: sticker)
+                        StickerLabelView(sticker: sticker)
                             .frame(width: Self.itemSize.width, height: Self.itemSize.height, alignment: .center)
                     }
                 }
@@ -45,22 +46,7 @@ struct StickerCollectionView: View {
     }
 }
 
-struct StickerView: View {
-    let sticker: Sticker
-    var body: some View {
-        Image(uiImage: sticker.image)
-            .resizable()
-            .scaledToFit()
-    }
+#Preview {
+    StickersCollectionView()
+        .modelContainer(for: Sticker.self)
 }
-
-
-struct LabelStickerView: View {
-    let sticker: Sticker
-    var body: some View {
-        Image(uiImage: sticker.image)
-            .resizable()
-            .scaledToFit()
-    }
-}
-
