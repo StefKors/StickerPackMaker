@@ -58,7 +58,7 @@ struct StickerDetailView: View {
 //                }
 //            } else 
 
-            if let image = sticker.appplyStickerEffect() {
+            if let image = sticker.image {
                 Text("stickerImage")
                 ZStack {
                     Image(uiImage: image)

@@ -10,14 +10,14 @@ import MediaCore
 import MediaSwiftUI
 import OSLog
 import SwiftData
+import Photos
 
 fileprivate let logger = Logger(subsystem: "com.stefkors.StickerPackMaker", category: "PhotosImporterSheetView")
 
+extension Photo: @unchecked Sendable {}
+
 struct PhotosImporterSheetView: View {
     @Environment(\.modelContext) private var modelContext
-
-    @FetchAssets(sort: [Media.Sort(key: .creationDate, ascending: false)], fetchLimit: 600)
-    private var photos: [Photo]
 
     @State private var progress: Progress = Progress()
     @State private var showProgressView: Bool = false
@@ -25,14 +25,13 @@ struct PhotosImporterSheetView: View {
     var body: some View {
         VStack {
             if showProgressView {
-                ProgressView()
+                ProgressView(progress)
                     .progressViewStyle(.linear)
                     .transition(.slide.animation(.bouncy))
                     .scenePadding()
             } else {
                 VStack {
                     Text("Search PhotoLibrary for Pet Stickers")
-                    Text("Photos: ") + Text(photos.count.description).monospaced()
                 }
                 .transition(.slide.animation(.bouncy))
             }
@@ -40,9 +39,10 @@ struct PhotosImporterSheetView: View {
             HStack {
                 Button {
                     // action
-                    showProgressView.toggle()
-                    Task {
-                        await runImporter(photos: photos)
+                    showProgressView = true
+
+                    Task.detached {
+                        await startImport()
                     }
                 } label: {
                     Text("Start")
@@ -67,12 +67,22 @@ struct PhotosImporterSheetView: View {
         }
     }
 
-    func runImporter(photos: [Photo], limit: Int? = nil) async {
+    func startImport() async {
         let authorized = await PhotoLibrary.checkAuthorization()
         guard authorized else {
             logger.error("Photo library access was not authorized.")
             return
         }
+
+        runImporter(limit: 700)
+    }
+
+    func runImporter(limit: Int? = nil) {
+        let options = PHFetchOptions()
+        if let limit {
+            options.fetchLimit = limit
+        }
+        let assets = PHAsset.fetchAssets(with: options)
 
         let newContext = ModelContext(modelContext.container)
         newContext.autosaveEnabled = false
@@ -80,56 +90,100 @@ struct PhotosImporterSheetView: View {
 
         let size = 1024
 
-        var photoSetSize = photos.count
-        if let limit {
-            photoSetSize = min(limit, photoSetSize)
-        }
+        self.progress.totalUnitCount = Int64(assets.count)
 
-        let smallPhotoSet = photos[0..<photoSetSize]
-
-        self.progress.totalUnitCount = Int64(smallPhotoSet.count)
-
-        for photo in smallPhotoSet {
-            photo.uiImage(targetSize: CGSize(width: size, height: size), contentMode: .default) { result in
+        assets.enumerateObjects { asset, _, _ in
+            let photo = Photo.init(phAsset: asset)
+            photo.uiImage(targetSize: CGSize(width: size, height: size), contentMode: .default) { result  in
                 if let getResult = try? result.get() {
-
                     if getResult.quality == .high {
                         let image = getResult.value
-
-                        //                    print("fetched image")
                         let pets = Sticker.detectPet(sourceImage: image)
                         if !pets.isEmpty {
                             if let firstPet = pets.first {
-                                //                            let stickerImage = StickerEffect.generate(usingInputImage: image)
-                                //                        print("found pets")
-
-                                //                            let croppedImage = image.crop(to: firstPet.rect)
-                                let isolatedImage = StickerEffect.generate(usingInputImage: image, subjectPosition: CGPoint(x: firstPet.rect.midX, y: firstPet.rect.midY))
+                                let isolatedImage = StickerEffect.isolateSubject(image, subjectPosition: CGPoint(x: firstPet.rect.midX, y: firstPet.rect.midY))
 
                                 if let imageData = isolatedImage?.pngData() {
-                                    //                            print("created imageData")
                                     if let id = photo.identifier?.localIdentifier {
 
                                         print("image.. \(id)")
                                         let sticker = Sticker(id: id, imageData: imageData, animals: pets)
-                                        modelContext.insert(sticker)
+                                        //                                            modelContext.insert(sticker)
                                         newContext.insert(sticker)
+
                                     }
                                 }
                             }
                         }
-
                         self.progress.completedUnitCount += 1
+                        if self.progress.completedUnitCount == Int64(assets.count) {
+                            try? newContext.save()
+                            print("finished?")
+                        }
                     }
                 }
-
             }
         }
-
-        //        try? newContext.save()
-        //        self.progress = nil
-        //        print("!!! finished updating stickers !!!")
     }
+
+//    func runImporter( limit: Int? = nil) {
+//        let options = PHFetchOptions()
+//        options.fetchLimit = 600
+//        let result = PHAsset.fetchAssets(with: options)
+//
+//        var photos: [Photo] = []
+//        result.enumerateObjects { asset, _, _ in
+//            let item = Photo.init(phAsset: asset)
+//            photos.append(item)
+//        }
+//
+//        let newContext = ModelContext(modelContext.container)
+//        newContext.autosaveEnabled = false
+//
+//
+//        let size = 1024
+//
+//        var photoSetSize = photos.count
+//        if let limit {
+//            photoSetSize = min(limit, photoSetSize)
+//        }
+//
+//        let smallPhotoSet = photos[0..<photoSetSize]
+//
+//        self.progress.totalUnitCount = Int64(smallPhotoSet.count)
+//
+//        for photo in smallPhotoSet {
+//            photo.uiImage(targetSize: CGSize(width: size, height: size), contentMode: .default) { result  in
+//                if let getResult = try? result.get() {
+//                    if getResult.quality == .high {
+//                        let image = getResult.value
+//                        let pets = Sticker.detectPet(sourceImage: image)
+//                        if !pets.isEmpty {
+//                            if let firstPet = pets.first {
+//                                let isolatedImage = StickerEffect.isolateSubject(image, subjectPosition: CGPoint(x: firstPet.rect.midX, y: firstPet.rect.midY))
+//
+//                                if let imageData = isolatedImage?.pngData() {
+//                                    if let id = photo.identifier?.localIdentifier {
+//
+//                                        print("image.. \(id)")
+//                                        let sticker = Sticker(id: id, imageData: imageData, animals: pets)
+//                                        //                                            modelContext.insert(sticker)
+//                                        newContext.insert(sticker)
+//
+//                                    }
+//                                }
+//                            }
+//                        }
+//                        self.progress.completedUnitCount += 1
+//                        if self.progress.completedUnitCount == Int64(smallPhotoSet.count) {
+//                            try? newContext.save()
+//                            print("finished?")
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
 }
 
 #Preview {

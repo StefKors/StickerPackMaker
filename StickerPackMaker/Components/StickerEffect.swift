@@ -1,9 +1,9 @@
 /*
-See the LICENSE.txt file for this sample’s licensing information.
+ See the LICENSE.txt file for this sample’s licensing information.
 
-Abstract:
-Handles subject lifting, visual effects application, and compositing.
-*/
+ Abstract:
+ Handles subject lifting, visual effects application, and compositing.
+ */
 
 import Foundation
 import Combine
@@ -33,12 +33,7 @@ final class StickerEffect {
     private var processingQueue = DispatchQueue(label: "EffectsProcessing")
 
     // Refresh the pipeline and generate a new output.
-    static func generate(
-        usingInputImage uiImage: UIImage?,
-        effect: Effect = .none,
-        background: Background = .transparent,
-        subjectPosition: CGPoint? = nil
-    ) -> UIImage? {
+    static func isolateSubject(_ uiImage: UIImage?, subjectPosition: CGPoint? = nil) -> UIImage? {
         guard let data = uiImage?.pngData(), let inputImage = CIImage(data: data) else {
             print("failed image")
             return nil
@@ -50,64 +45,18 @@ final class StickerEffect {
             return nil
         }
 
-        // Acquire the selected background image.
-        let backgroundImage = image(forBackground: background, inputImage: inputImage)
-            .cropped(to: inputImage.extent)
-
         // Apply the visual effect and composite.
-        let composited = apply(
-            effect: effect,
-            toInputImage: inputImage,
-            background: backgroundImage,
-            mask: mask)
+        let composited = apply(mask: mask, to: inputImage)
 
-        return UIImage(cgImage: render(ciImage: composited))
+        return UIImage(ciImage: composited)
     }
 }
 
 /// Applies the current effect and returns the composited image.
-private func apply(
-    effect: Effect,
-    toInputImage inputImage: CIImage,
-    background: CIImage,
-    mask: CIImage
-) -> CIImage {
-
-    var postEffectBackground = background
-
-    switch effect {
-    case .none:
-        break
-
-    case .highlight:
-        let filter = CIFilter.exposureAdjust()
-        filter.inputImage = background
-        filter.ev = -3
-        postEffectBackground = filter.outputImage!
-
-    case .bokeh:
-        let filter = CIFilter.bokehBlur()
-        filter.inputImage = apply(
-            effect: .none,
-            toInputImage: CIImage(color: .white)
-                .cropped(to: inputImage.extent),
-            background: background,
-            mask: mask)
-        filter.ringSize = 1
-        filter.ringAmount = 1
-        filter.softness = 1.0
-        filter.radius = 20
-        postEffectBackground = filter.outputImage!
-
-    case .noir:
-        let filter = CIFilter.photoEffectNoir()
-        filter.inputImage = background
-        postEffectBackground = filter.outputImage!
-    }
-
+private func apply(mask: CIImage, to inputImage: CIImage) -> CIImage {
     let filter = CIFilter.blendWithMask()
     filter.inputImage = inputImage
-    filter.backgroundImage = postEffectBackground
+    filter.backgroundImage = CIImage(color: CIColor.clear).cropped(to: inputImage.extent)
     filter.maskImage = mask
     return filter.outputImage!
 }
@@ -183,41 +132,6 @@ private func instances(
     // Otherwise, restrict this to just the selected instance.
     return instanceLabel == 0 ? observation.allInstances : [Int(instanceLabel)]
 }
-
-/// Returns the image for the given background preset.
-private func image(forBackground background: Background, inputImage: CIImage) -> CIImage {
-    switch background {
-    case .original:
-        return inputImage
-    case .transparent:
-        return CIImage(color: CIColor.clear)
-    case .greenScreen:
-        return CIImage(color: CIColor.green)
-//    case .sunset:
-//        // Load the background image
-//        var bgImage = loadImage(named: "sunset")
-//        
-//        // Upsample the background image if the input image is larger.
-//        let scale = max(inputImage.extent.width / bgImage.extent.width,
-//                        inputImage.extent.height / bgImage.extent.height)
-//        if scale > 1.0 {
-//            bgImage = bgImage.transformed(by: CGAffineTransform(scaleX: scale, y: scale))
-//        }
-//        
-//        return bgImage
-    }
-}
-
-/// Loads a bundled image asset by name.
-//private func loadImage(named: String, withExtension ext: String = "jpg") -> CIImage {
-//    guard let url = Bundle.main.url(forResource: named, withExtension: ext) else {
-//        fatalError("Sample image asset \(named) not found.")
-//    }
-//    guard let image = CIImage(contentsOf: url) else {
-//        fatalError("Failed to load sample image \(named) data.")
-//    }
-//    return image
-//}
 
 /// Renders a CIImage onto a CGImage.
 private func render(ciImage img: CIImage) -> CGImage {

@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 import OSLog
 
+
 fileprivate let logger = Logger(subsystem: "com.stefkors.StickerPackMaker", category: "ContentView")
 
 struct ContentView: View {
@@ -19,8 +20,10 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             ZStack(alignment: .bottom) {
+                Color(red: 0.196078, green: 0.427451, blue: 0.341176).ignoresSafeArea()
+
                 StickersCollectionView()
-                
+
                 NavigationLink {
                     PhotosImporterSheetView()
                 } label: {
@@ -32,14 +35,7 @@ struct ContentView: View {
             }
             .navigationBarTitle("\(stickers.count) Stickers", displayMode: .inline)
         }
-//        .sheet(isPresented: $isPresentingImporter) {
-//            PhotosImporterSheetView()
-//                .presentationDetents([.medium])
-//                .presentationDragIndicator(.visible)
-//        }
-//        .task(priority: .medium) {
-//            logger.debug("Starting Stickers Update")
-//        }
+
     }
 
 

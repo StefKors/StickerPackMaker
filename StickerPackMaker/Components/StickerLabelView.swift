@@ -11,7 +11,7 @@ struct StickerLabelView: View {
     let sticker: Sticker
     
     var body: some View {
-        if let image = sticker.appplyStickerEffect() {
+        if let image = sticker.image {
             Image(uiImage: image)
                 .resizable()
                 .scaledToFit()

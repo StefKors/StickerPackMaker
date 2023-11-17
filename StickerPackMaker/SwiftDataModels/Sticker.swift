@@ -33,7 +33,7 @@ extension UIImage {
 
 
 @Model
-final class Sticker: Identifiable {
+final class Sticker: Identifiable, Sendable {
     @Attribute(.unique) var id: String
 
     @Attribute(.externalStorage) var imageData: Data
@@ -48,10 +48,6 @@ final class Sticker: Identifiable {
         self.id = id
         self.imageData = imageData
         self.animals = animals
-    }
-
-    func appplyStickerEffect() -> UIImage? {
-        return StickerEffect.generate(usingInputImage: image)
     }
 
     static func detectPet(sourceImage: UIImage) -> [Pet] {
