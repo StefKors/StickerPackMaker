@@ -30,26 +30,57 @@ enum Background: String, Equatable, CaseIterable {
 
 /// A class that produces and publishes the postprocessed output.
 final class StickerEffect {
-    private var processingQueue = DispatchQueue(label: "EffectsProcessing")
 
     // Refresh the pipeline and generate a new output.
-    static func isolateSubject(_ uiImage: UIImage?, subjectPosition: CGPoint? = nil) -> UIImage? {
+    static func isolateSubject(_ uiImage: UIImage?, subjectPosition: CGPoint? = nil) -> (UIImage?, CGPath?) {
         guard let data = uiImage?.pngData(), let inputImage = CIImage(data: data) else {
             print("failed image")
-            return nil
+            return (nil, nil)
         }
 
         // Generate the input-image mask.
         guard let mask = subjectMask(fromImage: inputImage, atPoint: subjectPosition) else {
             print("failed mask")
-            return nil
+            return (nil, nil)
         }
+
+        // Get contours from mask image
+        let orientation = uiImage?.imageOrientation ?? .up
+        let contours = contours(from: mask, orientation: orientation)
 
         // Apply the visual effect and composite.
         let composited = apply(mask: mask, to: inputImage)
 
-        return UIImage(ciImage: composited)
+        return (UIImage(ciImage: composited), contours)
     }
+}
+
+private func contours(from image: CIImage, orientation: UIImage.Orientation) -> CGPath? {
+//    guard let sourceImage else { return nil }
+    // Create a request.
+    let request = VNDetectContoursRequest()
+
+    request.detectsDarkOnLight = false
+
+    // Create a request handler.
+
+    let handler = VNImageRequestHandler(ciImage: image, orientation: .init(orientation))
+
+    // Perform the request.
+    do {
+        try handler.perform([request])
+    } catch {
+        print("Failed to perform Vision request.")
+        return nil
+    }
+
+    // Acquire the instance mask observation.
+    guard let result = request.results?.first else {
+        print("No contour observations found.")
+        return nil
+    }
+
+    return result.normalizedPath
 }
 
 /// Applies the current effect and returns the composited image.

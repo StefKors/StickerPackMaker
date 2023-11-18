@@ -101,13 +101,13 @@ struct PhotosImporterSheetView: View {
                         let pets = Sticker.detectPet(sourceImage: image)
                         if !pets.isEmpty {
                             if let firstPet = pets.first {
-                                let isolatedImage = StickerEffect.isolateSubject(image, subjectPosition: CGPoint(x: firstPet.rect.midX, y: firstPet.rect.midY))
+                                let (isolatedImage, contour) = StickerEffect.isolateSubject(image, subjectPosition: CGPoint(x: firstPet.rect.midX, y: firstPet.rect.midY))
 
                                 if let imageData = isolatedImage?.pngData() {
                                     if let id = photo.identifier?.localIdentifier {
 
                                         print("image.. \(id)")
-                                        let sticker = Sticker(id: id, imageData: imageData, animals: pets)
+                                        let sticker = Sticker(id: id, imageData: imageData, animals: pets, contour: contour)
                                         //                                            modelContext.insert(sticker)
                                         newContext.insert(sticker)
 

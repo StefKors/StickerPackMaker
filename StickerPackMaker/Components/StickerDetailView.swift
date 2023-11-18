@@ -17,15 +17,25 @@ struct ContourShape: Shape {
 
     func path(in rect: CGRect) -> Path {
         let absolutePath = path
+        print(absolutePath.boundingRect)
+        print(rect)
+
+
+//        return path
 
         // Scaling path to fit
         // https://stackoverflow.com/a/75911341/3199999
         let boundingRect = absolutePath.boundingRect
-        let scale = min(rect.width/boundingRect.width, rect.height/boundingRect.height)
-        let scaled = absolutePath.applying(.init(scaleX: scale, y: scale))
+//        let newWidth = rect.width*boundingRect.width
+
+        let scale = rect.width
+        print(scale)
+//        let otherScale = rect.width/boundingRect.width //min(rect.width/boundingRect.width, rect.height/boundingRect.height)
+//        print(otherScale)
+        let scaled = absolutePath.applying(.init(scaleX: rect.width, y: -rect.height))
         let scaledBoundingRect = scaled.boundingRect
-        let offsetX = scaledBoundingRect.midX - rect.midX
-        let offsetY = scaledBoundingRect.midY - rect.midY
+        let offsetX = (scaledBoundingRect.midX - rect.midX)
+        let offsetY = (scaledBoundingRect.midY - rect.midY)
         return scaled.offsetBy(dx: -offsetX, dy: -offsetY)
     }
 }
@@ -59,19 +69,33 @@ struct StickerDetailView: View {
 //            } else 
 
             if let image = sticker.image {
-                Text("stickerImage")
-                ZStack {
-                    Image(uiImage: image)
-                        .resizable()
-                        .scaledToFit()
+                VStack {
+                    GeometryReader { GeometryProxy in
+                        Image(uiImage: image)
+                            .resizable()
+                            .scaledToFit()
+                        //                        .scaledToFill()
+                            .border(.red, width: 1)
+                            .shinySticker()
+                            .overlay(alignment: .bottom) {
+                                if let path = sticker.path {
+                                    ContourShape(path: path)
+                                        .stroke(.blue, lineWidth: 4)
+                                        .fill(.red)
+                                        .aspectRatio(contentMode: .fit)
+//                                        .frame(width: GeometryProxy.size.width, height: GeometryProxy.size.height, alignment: .center)
+                                        .border(.blue, width: 2)
+                                }
+                            }
+                    }
 
-//                    if let animal = sticker.animals.first {
-//                        ContourShape(path: animal.rect)
-//                            .stroke(.blue, lineWidth: 4)
-//                            .fill(.red)
-//                            .frame(width: 400, height: 400)
-//                    }
+//                    RoundedRectangle(cornerRadius: 14.0)
+//                        .frame(width: 200.0, height: 70.0)
+//                        .shinySticker()
+
+
                 }
+//                .frame(width: 400, height: 400)
             } else {
                 Text("failed to load image")
                     .foregroundStyle(.red)

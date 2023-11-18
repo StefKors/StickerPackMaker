@@ -26,7 +26,6 @@ extension UIImage {
             scale: self.imageRendererFormat.scale,
             orientation: self.imageOrientation
         )
-
     }
 }
 
@@ -44,10 +43,38 @@ final class Sticker: Identifiable, Sendable {
 
     var animals: [Pet]
 
-    init(id: String = UUID().uuidString, imageData: Data, animals: [Pet]) {
+//    @Attribute(.externalStorage)
+    var pathData: Data?
+
+    var path: CGPath? {
+        if let pathData {
+            return try? NSKeyedUnarchiver.unarchivedObject(ofClass: UIBezierPath.self, from: pathData)?.cgPath
+        } else {
+            return nil
+        }
+    }
+
+    init(id: String = UUID().uuidString, imageData: Data, animals: [Pet], contour: CGPath? = nil) {
         self.id = id
         self.imageData = imageData
         self.animals = animals
+
+
+        if let contour {
+
+            let path = UIBezierPath(cgPath: contour)
+            let data = try? NSKeyedArchiver.archivedData(withRootObject: path, requiringSecureCoding: false)
+            self.pathData = data
+//            self.contour = UIBezierPath(cgPath: contour)
+//            print(UIBezierPath(cgPath: contour).hashValue.description)
+        } else {
+            self.pathData = nil
+        }
+//
+//            self.contour = UIBezierPath(cgPath: contour).hashValue.description
+//        } else {
+//            self.contour = nil
+//        }
     }
 
     static func detectPet(sourceImage: UIImage) -> [Pet] {

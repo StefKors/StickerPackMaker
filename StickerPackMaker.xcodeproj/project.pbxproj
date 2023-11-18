@@ -12,6 +12,9 @@
 		8A161B4F2B016716007F9F57 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A161B4E2B016716007F9F57 /* Assets.xcassets */; };
 		8A161B522B016716007F9F57 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A161B512B016716007F9F57 /* Preview Assets.xcassets */; };
 		8A161B6A2B016F05007F9F57 /* PhotoLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B692B016F05007F9F57 /* PhotoLibrary.swift */; };
+		8A4F69FC2B07D13900EB7CED /* Gradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4F69FB2B07D13900EB7CED /* Gradient.swift */; };
+		8A4F69FE2B07D13D00EB7CED /* MotionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4F69FD2B07D13D00EB7CED /* MotionManager.swift */; };
+		8A4F6A002B07D14300EB7CED /* ShinyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4F69FF2B07D14300EB7CED /* ShinyView.swift */; };
 		8A556FD82B06A5020078DE03 /* StickersCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A556FD72B06A5020078DE03 /* StickersCollectionView.swift */; };
 		8A556FDA2B06A83C0078DE03 /* StickerEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A556FD92B06A83C0078DE03 /* StickerEffect.swift */; };
 		8A77289B2B0777F20086D840 /* MediaCore in Frameworks */ = {isa = PBXBuildFile; productRef = 8A77289A2B0777F20086D840 /* MediaCore */; };
@@ -33,6 +36,9 @@
 		8A161B532B016716007F9F57 /* StickerPackMaker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StickerPackMaker.entitlements; sourceTree = "<group>"; };
 		8A161B542B016716007F9F57 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8A161B692B016F05007F9F57 /* PhotoLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibrary.swift; sourceTree = "<group>"; };
+		8A4F69FB2B07D13900EB7CED /* Gradient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gradient.swift; sourceTree = "<group>"; };
+		8A4F69FD2B07D13D00EB7CED /* MotionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotionManager.swift; sourceTree = "<group>"; };
+		8A4F69FF2B07D14300EB7CED /* ShinyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShinyView.swift; sourceTree = "<group>"; };
 		8A556FD72B06A5020078DE03 /* StickersCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickersCollectionView.swift; sourceTree = "<group>"; };
 		8A556FD92B06A83C0078DE03 /* StickerEffect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerEffect.swift; sourceTree = "<group>"; };
 		8A77289E2B0786EE0086D840 /* StickersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickersListView.swift; sourceTree = "<group>"; };
@@ -99,6 +105,9 @@
 		8A161B6F2B017320007F9F57 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				8A4F69FF2B07D14300EB7CED /* ShinyView.swift */,
+				8A4F69FD2B07D13D00EB7CED /* MotionManager.swift */,
+				8A4F69FB2B07D13900EB7CED /* Gradient.swift */,
 				8A161B692B016F05007F9F57 /* PhotoLibrary.swift */,
 				8A7728A02B0787D30086D840 /* StickerDetailView.swift */,
 				8A556FD92B06A83C0078DE03 /* StickerEffect.swift */,
@@ -196,8 +205,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A161B4B2B016715007F9F57 /* ContentView.swift in Sources */,
+				8A4F69FE2B07D13D00EB7CED /* MotionManager.swift in Sources */,
 				8A556FD82B06A5020078DE03 /* StickersCollectionView.swift in Sources */,
 				8A77289F2B0786EE0086D840 /* StickersListView.swift in Sources */,
+				8A4F6A002B07D14300EB7CED /* ShinyView.swift in Sources */,
 				8A556FDA2B06A83C0078DE03 /* StickerEffect.swift in Sources */,
 				8A7728A52B0788600086D840 /* Sticker.swift in Sources */,
 				8A7728A82B078AF50086D840 /* PhotosImporterSheetView.swift in Sources */,
@@ -206,6 +217,7 @@
 				8A161B6A2B016F05007F9F57 /* PhotoLibrary.swift in Sources */,
 				8A7728A32B0787F20086D840 /* StickerLabelView.swift in Sources */,
 				8A161B492B016715007F9F57 /* StickerPackMakerApp.swift in Sources */,
+				8A4F69FC2B07D13900EB7CED /* Gradient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

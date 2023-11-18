@@ -28,6 +28,14 @@ struct StickerPackMakerApp: App {
 
     var body: some Scene {
         WindowGroup {
+//            Image(.sticker)
+//                .resizable()
+//                .scaledToFit()
+//                .modifier(ShinySticker())
+//                .padding(20)
+//                .clipped()
+//                .clipShape(RoundedRectangle(cornerRadius: 50.0, style: .continuous))
+//                .frame(width: 300, height: 300, alignment: .center)
             ContentView()
         }
         .modelContainer(sharedModelContainer)
