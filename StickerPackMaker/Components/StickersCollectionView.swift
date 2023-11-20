@@ -45,6 +45,7 @@ struct StickersCollectionView: View {
 //                                        .fill(.white)
 //                                        .stroke(.white, lineWidth: 4)
 //                                }
+//                                .shinySticker()
                                 .matchedGeometryEffect(id: sticker.id, in: animation)
                                 .frame(width: Self.itemSize.width, height: Self.itemSize.height, alignment: .center)
                                 .onTapGesture {
@@ -78,6 +79,14 @@ struct StickersCollectionView: View {
 //                                    .fill(.white)
 //                                    .stroke(.white, lineWidth: 4)
 //                        }
+
+                        .shinySticker()
+                        .mask {
+                            Image(uiImage: image)
+                                .resizable()
+                                .scaledToFit()
+                        }
+                        
                         .matchedGeometryEffect(id: selectedSticker.id, in: animation)
                         .scenePadding()
                         .onTapGesture {

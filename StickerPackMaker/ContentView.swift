@@ -23,15 +23,28 @@ struct ContentView: View {
                 Color(red: 0.196078, green: 0.427451, blue: 0.341176).ignoresSafeArea()
 
                 StickersCollectionView()
-
-                NavigationLink {
-                    PhotosImporterSheetView()
-                } label: {
-                    Text("Import Stickers")
-                        .padding()
-                }
-                .buttonStyle(.borderedProminent)
-                .padding(.bottom)
+                    .sheet(isPresented: $isPresentingImporter) {
+                        PhotosImporterSheetView(isPresentingImporter: $isPresentingImporter)
+                            .presentationDetents([.fraction(0.3 )])
+                    }
+                    .toolbar {
+                        ToolbarItem {
+                            Button {
+                                isPresentingImporter.toggle()
+                            } label: {
+                                Text("Import Stickers")
+                            }
+                        }
+                    }
+//
+//                NavigationLink {
+//                    PhotosImporterSheetView()
+//                } label: {
+//                    Text("Import Stickers")
+//                        .padding()
+//                }
+//                .buttonStyle(.borderedProminent)
+//                .padding(.bottom)
             }
             .navigationBarTitle("\(stickers.count) Stickers", displayMode: .inline)
         }

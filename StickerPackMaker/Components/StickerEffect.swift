@@ -30,7 +30,6 @@ enum Background: String, Equatable, CaseIterable {
 
 /// A class that produces and publishes the postprocessed output.
 final class StickerEffect {
-
     // Refresh the pipeline and generate a new output.
     // TOOD: speedup this image processing
     static func isolateSubject(_ uiImage: UIImage?, subjectPosition: CGPoint? = nil) -> UIImage? {
@@ -70,7 +69,6 @@ final class StickerEffect {
             print("failed to crop image")
             return nil
         }
-
 
         return croppedImage
     }
@@ -120,6 +118,8 @@ private func contours(from image: CIImage, orientation: UIImage.Orientation) -> 
         print("No contour observations found.")
         return nil
     }
+
+    print("contours \(result.contourCount)")
 
     return result.normalizedPath
 }
@@ -241,7 +241,7 @@ extension CGImage {
         for x in 1 ..< width {
             for y in 1 ..< height {
 
-                let i = bytesPerRow * Int(y) + bytesPerPixel * Int(x)
+                let i = bytesPerRow * y + bytesPerPixel * x
                 let a = CGFloat(ptr[i + 3]) / 255.0
 
                 if(a>0) {
