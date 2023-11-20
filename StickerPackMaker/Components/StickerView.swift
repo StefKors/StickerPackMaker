@@ -39,12 +39,13 @@ struct StickerView: View {
                     .resizable()
                     .scaledToFit()
                     .background(alignment: .center) {
-                        if let path = sticker.path {
-                            ContourShape(path: path)
-                                .fill(.white)
-                                .stroke(.white, lineWidth: 4)
-                                .shadow(radius: 12)
-                        }
+//                        if let path = sticker.path {
+//                            ContourShape(path: path)
+//                                .fill(.white)
+//                                .stroke(.white, lineWidth: 4)
+////                                .shadow(radius: 12)
+//                                .id("contour-\(sticker.id)")
+//                        }
                     }
             } else {
                 Text("failed to load image")

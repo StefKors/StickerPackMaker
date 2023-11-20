@@ -32,33 +32,69 @@ enum Background: String, Equatable, CaseIterable {
 final class StickerEffect {
 
     // Refresh the pipeline and generate a new output.
-    static func isolateSubject(_ uiImage: UIImage?, subjectPosition: CGPoint? = nil) -> (UIImage?, CGPath?) {
+    // TOOD: speedup this image processing
+    static func isolateSubject(_ uiImage: UIImage?, subjectPosition: CGPoint? = nil) -> UIImage? {
         guard let uiImage, let data = uiImage.pngData(), let inputImage = CIImage(data: data) else {
             print("failed image")
-            return (nil, nil)
+            return nil
         }
 
         // Generate the input-image mask.
         guard let mask = subjectMask(fromImage: inputImage, atPoint: subjectPosition) else {
             print("failed mask")
-            return (nil, nil)
+            return nil
+        }
+
+        // Get contours from masked image
+        guard let contours = contours(from: mask, orientation: uiImage.imageOrientation) else {
+            print("failed to get contours")
+            return nil
         }
 
         // Apply the visual effect and composite.
         let composited = apply(mask: mask, to: inputImage)
+
+        // Render to UIImage
         let renderedImage = render(ciImage: composited)
 
-        guard let croppedImage = renderedImage.cropAlpha(scale: uiImage.scale, orientation: uiImage.imageOrientation) else {
-            print("failed to crop image")
-            return (nil, nil)
+        // Draw image contours
+        let contouredImage = drawContours(path: contours, sourceImage: renderedImage)
+
+        guard let contouredImageCG = contouredImage.cgImage else {
+            print("failed converting image to cgImage")
+            return nil
         }
 
-        // Get contours from masked image
-        let contours = contours(from: mask, orientation: uiImage.imageOrientation)
+        // Crop all transparent space around image
+        guard let croppedImage = contouredImageCG.cropAlpha(scale: uiImage.scale, orientation: uiImage.imageOrientation) else {
+            print("failed to crop image")
+            return nil
+        }
 
-        return (croppedImage, contours)
+
+        return croppedImage
     }
 }
+
+func drawContours(path: CGPath, sourceImage: CGImage) -> UIImage {
+    let size = CGSize(width: sourceImage.width, height: sourceImage.height)
+    let renderer = UIGraphicsImageRenderer(size: size)
+
+    let renderedImage = renderer.image { (context) in
+        let renderingContext = context.cgContext
+        let flipVertical = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: 0, ty: size.height)
+        renderingContext.concatenate(flipVertical)
+        renderingContext.draw(sourceImage, in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+        renderingContext.scaleBy(x: size.width, y: size.height)
+        renderingContext.setLineWidth(5.0 / CGFloat(size.width))
+        renderingContext.setStrokeColor(UIColor.white.cgColor)
+        renderingContext.addPath(path)
+        renderingContext.strokePath()
+    }
+
+    return renderedImage
+}
+
 
 private func contours(from image: CIImage, orientation: UIImage.Orientation) -> CGPath? {
 //    guard let sourceImage else { return nil }

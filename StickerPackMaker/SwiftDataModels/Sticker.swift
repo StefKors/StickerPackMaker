@@ -46,35 +46,10 @@ final class Sticker: Identifiable, Sendable {
 //    @Attribute(.externalStorage)
     var pathData: Data?
 
-    var path: CGPath? {
-        if let pathData {
-            return try? NSKeyedUnarchiver.unarchivedObject(ofClass: UIBezierPath.self, from: pathData)?.cgPath
-        } else {
-            return nil
-        }
-    }
-
-    init(id: String = UUID().uuidString, imageData: Data, animals: [Pet], contour: CGPath? = nil) {
+    init(id: String = UUID().uuidString, imageData: Data, animals: [Pet]) {
         self.id = id
         self.imageData = imageData
         self.animals = animals
-
-
-        if let contour {
-
-            let path = UIBezierPath(cgPath: contour)
-            let data = try? NSKeyedArchiver.archivedData(withRootObject: path, requiringSecureCoding: false)
-            self.pathData = data
-//            self.contour = UIBezierPath(cgPath: contour)
-//            print(UIBezierPath(cgPath: contour).hashValue.description)
-        } else {
-            self.pathData = nil
-        }
-//
-//            self.contour = UIBezierPath(cgPath: contour).hashValue.description
-//        } else {
-//            self.contour = nil
-//        }
     }
 
     static func detectPet(sourceImage: UIImage) -> [Pet] {
@@ -93,32 +68,6 @@ final class Sticker: Identifiable, Sendable {
 
         return identifiers ?? []
     }
-
-//    func drawBoxes() -> [CGRect] {
-//        print("draw boxes")
-//        guard let ciImage = CIImage(data: sticker.imageData), let image = sticker.image else {
-//            print("failed to make ciImage")
-//            return [] }
-//        let animalsRequest = VNRecognizeAnimalsRequest()
-//        let requestHandler = VNImageRequestHandler(ciImage: ciImage,
-//                                                   orientation: .init(image.imageOrientation),
-//                                                   options: [:])
-//
-//        do {
-//            try requestHandler.perform([animalsRequest])
-//        } catch {
-//            print("Can't make the request due to \(error)")
-//        }
-//
-//        guard let results = animalsRequest.results else {
-//            print("failed to cast")
-//            return [] }
-//
-//        let rectangles = results
-//            .map { $0.boundingBox.rectangle(in: image) }
-//
-//        return rectangles
-//    }
 }
 
 extension Sticker {
