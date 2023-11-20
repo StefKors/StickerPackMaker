@@ -134,7 +134,7 @@ struct PhotosImporterSheetView: View {
 
     func getAllHightQualityImages() async -> [UIImage] {
         let size = 375
-        let allPhotos = Media.Photos.all[0..<200]
+        let allPhotos = Media.Photos.all[0..<2000]
         let totalUnitCount = allPhotos.count
 
         var images: [UIImage] = []

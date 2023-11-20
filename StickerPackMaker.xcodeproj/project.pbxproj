@@ -352,6 +352,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = StickerPackMaker/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Use your camera to create Sticky Pets";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "The app uses photo library access to create stickers from your pets";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -384,6 +386,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = StickerPackMaker/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Use your camera to create Sticky Pets";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "The app uses photo library access to create stickers from your pets";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

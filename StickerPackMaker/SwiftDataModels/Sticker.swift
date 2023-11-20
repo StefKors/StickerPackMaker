@@ -33,15 +33,16 @@ extension UIImage {
 
 @Model
 final class Sticker: Identifiable, Sendable {
-    @Attribute(.unique) var id: String
+//    @Attribute(.unique) 
+    var id: String = UUID().uuidString
 
-    @Attribute(.externalStorage) var imageData: Data
+    @Attribute(.externalStorage) var imageData: Data = Data()
 
     var image: UIImage? {
         UIImage(data: imageData)
     }
 
-    var animals: [Pet]
+    var animals: [Pet] = []
 
 //    @Attribute(.externalStorage)
     var pathData: Data?
