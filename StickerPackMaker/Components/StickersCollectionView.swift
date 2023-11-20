@@ -36,7 +36,8 @@ struct StickersCollectionView: View {
             ScrollView {
                 LazyVGrid(columns: columns, spacing: Self.itemSpacing) {
                     ForEach(stickers) { sticker in
-                        StickerLabelView(sticker: sticker, animation: animation)
+                        StickerView(sticker: sticker)
+                            .matchedGeometryEffect(id: sticker.id, in: animation)
                             .frame(width: Self.itemSize.width, height: Self.itemSize.height, alignment: .center)
                             .onTapGesture {
                                 withAnimation(.snappy) {
@@ -51,7 +52,8 @@ struct StickersCollectionView: View {
             .opacity(isShowingDetail ? 0 : 1)
 
             if isShowingDetail, let selectedSticker {
-                StickerDetailView(sticker: selectedSticker, animation: animation)
+                StickerView(sticker: selectedSticker)
+                    .matchedGeometryEffect(id: selectedSticker.id, in: animation)
                     .onTapGesture {
                         withAnimation(.snappy) {
                             isShowingDetail = false

@@ -15,63 +15,37 @@ struct ContourShape: Shape {
         self.path = Path(path)
     }
 
+    /// based on: https://stackoverflow.com/a/75911341/3199999
+    /// but with indipendent x & y scaling
     func path(in rect: CGRect) -> Path {
-        let absolutePath = path
-        print(absolutePath.boundingRect)
-        print(rect)
-
-
-//        return path
-
-        // Scaling path to fit
-        // https://stackoverflow.com/a/75911341/3199999
-        let boundingRect = absolutePath.boundingRect
-//        let newWidth = rect.width*boundingRect.width
-
-        let scale = rect.width
-        print(scale)
-//        let otherScale = rect.width/boundingRect.width //min(rect.width/boundingRect.width, rect.height/boundingRect.height)
-//        print(otherScale)
-        let scaled = absolutePath.applying(.init(scaleX: rect.width, y: -rect.height))
+        let boundingRect = path.boundingRect
+        let scaleX = rect.width/boundingRect.width
+        let scaleY = rect.height/boundingRect.height
+        let scaled = path.applying(.init(scaleX: scaleX, y: -scaleY))
         let scaledBoundingRect = scaled.boundingRect
-        let offsetX = (scaledBoundingRect.midX - rect.midX)
-        let offsetY = (scaledBoundingRect.midY - rect.midY)
+        let offsetX = scaledBoundingRect.midX - rect.midX
+        let offsetY = scaledBoundingRect.midY - rect.midY
         return scaled.offsetBy(dx: -offsetX, dy: -offsetY)
     }
 }
 
-struct StickerDetailView: View {
+struct StickerView: View {
     let sticker: Sticker
-    let animation: Namespace.ID
-
-    @State private var drawnImage: UIImage?
-    @State private var path: CGPath?
-    @State private var box: CGRect?
 
     var body: some View {
         VStack {
             if let image = sticker.image {
-                VStack {
-                    GeometryReader { GeometryProxy in
-                        Image(uiImage: image)
-                            .resizable()
-                            .scaledToFit()
-                            .matchedGeometryEffect(id: sticker.id, in: animation)
-                        //                        .scaledToFill()
-                            .border(.red, width: 1)
-                            .shinySticker()
-                            .overlay(alignment: .bottom) {
-                                if let path = sticker.path {
-                                    ContourShape(path: path)
-                                        .stroke(.blue, lineWidth: 4)
-                                        .fill(.red)
-                                        .aspectRatio(contentMode: .fit)
-                                        .border(.blue, width: 2)
-                                }
-                            }
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFit()
+                    .background(alignment: .center) {
+                        if let path = sticker.path {
+                            ContourShape(path: path)
+                                .fill(.white)
+                                .stroke(.white, lineWidth: 4)
+                                .shadow(radius: 12)
+                        }
                     }
-                }
-
             } else {
                 Text("failed to load image")
                     .foregroundStyle(.red)
@@ -82,5 +56,5 @@ struct StickerDetailView: View {
 
 #Preview {
     @Namespace var animation
-    return StickerDetailView(sticker: .preview, animation: animation)
+    return StickerView(sticker: .preview)
 }

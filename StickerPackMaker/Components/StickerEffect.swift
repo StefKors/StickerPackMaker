@@ -33,7 +33,7 @@ final class StickerEffect {
 
     // Refresh the pipeline and generate a new output.
     static func isolateSubject(_ uiImage: UIImage?, subjectPosition: CGPoint? = nil) -> (UIImage?, CGPath?) {
-        guard let data = uiImage?.pngData(), let inputImage = CIImage(data: data) else {
+        guard let uiImage, let data = uiImage.pngData(), let inputImage = CIImage(data: data) else {
             print("failed image")
             return (nil, nil)
         }
@@ -44,14 +44,19 @@ final class StickerEffect {
             return (nil, nil)
         }
 
-        // Get contours from mask image
-        let orientation = uiImage?.imageOrientation ?? .up
-        let contours = contours(from: mask, orientation: orientation)
-
         // Apply the visual effect and composite.
         let composited = apply(mask: mask, to: inputImage)
+        let renderedImage = render(ciImage: composited)
 
-        return (UIImage(ciImage: composited), contours)
+        guard let croppedImage = renderedImage.cropAlpha(scale: uiImage.scale, orientation: uiImage.imageOrientation) else {
+            print("failed to crop image")
+            return (nil, nil)
+        }
+
+        // Get contours from masked image
+        let contours = contours(from: mask, orientation: uiImage.imageOrientation)
+
+        return (croppedImage, contours)
     }
 }
 
@@ -170,4 +175,53 @@ private func render(ciImage img: CIImage) -> CGImage {
         fatalError("Failed to render CIImage.")
     }
     return cgImage
+}
+
+extension CGImage {
+
+    func cropAlpha(scale: CGFloat, orientation: UIImage.Orientation) -> UIImage? {
+
+        let width = self.width
+        let height = self.height
+
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let bytesPerPixel:Int = 4
+        let bytesPerRow = bytesPerPixel * width
+        let bitsPerComponent = 8
+        let bitmapInfo: UInt32 = CGImageAlphaInfo.premultipliedLast.rawValue | CGBitmapInfo.byteOrder32Big.rawValue
+
+        guard let context = CGContext(data: nil, width: width, height: height, bitsPerComponent: bitsPerComponent, bytesPerRow: bytesPerRow, space: colorSpace, bitmapInfo: bitmapInfo),
+              let ptr = context.data?.assumingMemoryBound(to: UInt8.self) else {
+            return nil
+        }
+
+        context.draw(self, in: CGRect(x: 0, y: 0, width: width, height: height))
+
+        var minX = width
+        var minY = height
+        var maxX: Int = 0
+        var maxY: Int = 0
+
+        for x in 1 ..< width {
+            for y in 1 ..< height {
+
+                let i = bytesPerRow * Int(y) + bytesPerPixel * Int(x)
+                let a = CGFloat(ptr[i + 3]) / 255.0
+
+                if(a>0) {
+                    if (x < minX) { minX = x };
+                    if (x > maxX) { maxX = x };
+                    if (y < minY) { minY = y};
+                    if (y > maxY) { maxY = y};
+                }
+            }
+        }
+
+        let rect = CGRect(x: CGFloat(minX),y: CGFloat(minY), width: CGFloat(maxX-minX), height: CGFloat(maxY-minY))
+        let croppedImage =  self.cropping(to: rect)!
+        let ret = UIImage(cgImage: croppedImage, scale: scale, orientation: orientation)
+
+        return ret;
+    }
+
 }

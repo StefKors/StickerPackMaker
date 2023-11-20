@@ -74,7 +74,7 @@ struct PhotosImporterSheetView: View {
             return
         }
 
-        runImporter(limit: 700)
+        runImporter(limit: 200)
     }
 
     func runImporter(limit: Int? = nil) {
