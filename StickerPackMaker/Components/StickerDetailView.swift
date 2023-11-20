@@ -42,6 +42,7 @@ struct ContourShape: Shape {
 
 struct StickerDetailView: View {
     let sticker: Sticker
+    let animation: Namespace.ID
 
     @State private var drawnImage: UIImage?
     @State private var path: CGPath?
@@ -49,31 +50,13 @@ struct StickerDetailView: View {
 
     var body: some View {
         VStack {
-//            if let image = drawnImage {
-//                Text("drawnImage")
-//                ZStack {
-//                    if let path, let box {
-//                        ContourShape(path: path)
-//                            .stroke(.pink, lineWidth: 4)
-//                            .frame(width: 400, height: 400)
-//                    }
-//
-//                    Image(uiImage: image)
-//                        .resizable()
-//                        .scaledToFit()
-//                        .frame(width: 400)
-//
-//
-//
-//                }
-//            } else 
-
             if let image = sticker.image {
                 VStack {
                     GeometryReader { GeometryProxy in
                         Image(uiImage: image)
                             .resizable()
                             .scaledToFit()
+                            .matchedGeometryEffect(id: sticker.id, in: animation)
                         //                        .scaledToFill()
                             .border(.red, width: 1)
                             .shinySticker()
@@ -83,55 +66,21 @@ struct StickerDetailView: View {
                                         .stroke(.blue, lineWidth: 4)
                                         .fill(.red)
                                         .aspectRatio(contentMode: .fit)
-//                                        .frame(width: GeometryProxy.size.width, height: GeometryProxy.size.height, alignment: .center)
                                         .border(.blue, width: 2)
                                 }
                             }
                     }
-
-//                    RoundedRectangle(cornerRadius: 14.0)
-//                        .frame(width: 200.0, height: 70.0)
-//                        .shinySticker()
-
-
                 }
-//                .frame(width: 400, height: 400)
+
             } else {
                 Text("failed to load image")
                     .foregroundStyle(.red)
             }
-        }.task {
-//            drawBoxes()
         }
     }
-
-//    func drawBoxes() -> [CGRect] {
-//        print("draw boxes")
-//        guard let ciImage = CIImage(data: sticker.imageData), let image = sticker.image else {
-//            print("failed to make ciImage")
-//            return [] }
-//        let animalsRequest = VNRecognizeAnimalsRequest()
-//        let requestHandler = VNImageRequestHandler(ciImage: ciImage,
-//                                                   orientation: .init(image.imageOrientation),
-//                                                   options: [:])
-//
-//        do {
-//            try requestHandler.perform([animalsRequest])
-//        } catch {
-//            print("Can't make the request due to \(error)")
-//        }
-//
-//        guard let results = animalsRequest.results else {
-//            print("failed to cast")
-//            return [] }
-//
-//        let rectangles = results
-//            .map { $0.boundingBox.rectangle(in: image) }
-//
-//        return rectangles
-//    }
 }
 
 #Preview {
-    StickerDetailView(sticker: .preview)
+    @Namespace var animation
+    return StickerDetailView(sticker: .preview, animation: animation)
 }

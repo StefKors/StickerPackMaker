@@ -9,12 +9,14 @@ import SwiftUI
 
 struct StickerLabelView: View {
     let sticker: Sticker
-    
+    let animation: Namespace.ID
+
     var body: some View {
         if let image = sticker.image {
             Image(uiImage: image)
                 .resizable()
                 .scaledToFit()
+                .matchedGeometryEffect(id: sticker.id, in: animation)
         } else {
             Text("failed to load image")
                 .foregroundStyle(.red)
@@ -23,5 +25,6 @@ struct StickerLabelView: View {
 }
 
 #Preview {
-    StickerLabelView(sticker: .preview)
+    @Namespace var animation
+    return StickerLabelView(sticker: .preview, animation: animation)
 }
