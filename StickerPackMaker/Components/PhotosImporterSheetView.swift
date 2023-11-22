@@ -86,16 +86,37 @@ struct PhotosImporterSheetView: View {
             return
         }
 
-        await asyncImporter()
+        // Set limit to 2000 so it doesn't run out of memory...
+        await asyncImporter(limit: 2000)
         isPresentingImporter = false
     }
 
-    func asyncImporter() async {
+    func asyncImporter(limit: Int? = nil) async {
         stickersFound = 0
-        let images = await getAllHightQualityImages()
+        let options = PHFetchOptions()
+        if let limit {
+            options.fetchLimit = limit
+        }
+        let assets = PHAsset.fetchAssets(with: options)
+        let sets = assets.count.chunk(of: 30)
+        print("number of sets \(sets.count)")
+
+        for set in sets {
+            await runImportBatch(set: set, assets: assets)
+        }
+
+        print("end result = \(stickersFound)")
+    }
+
+    func runImportBatch(set: IndexSet, assets: PHFetchResult<PHAsset>) async {
+        var photos: [Photo] = []
+        let _ = assets.enumerateObjects(at: set) { asset, _, _ in
+            photos.append(Photo(phAsset: asset))
+        }
+
+        let images = await getAllHightQualityImages(of: photos)
 
         var stickers: [Sticker] = []
-
         for image in images {
             if let sticker = await parse(fetched: image) {
                 withAnimation(.snappy) {
@@ -106,7 +127,6 @@ struct PhotosImporterSheetView: View {
         }
 
         bulkInsert(of: stickers)
-        print("end result = \(stickers.count)")
     }
 
     func bulkInsert(of stickers: [Sticker]) {
@@ -120,7 +140,7 @@ struct PhotosImporterSheetView: View {
 
     func parse(fetched: FetchedImage) async -> Sticker? {
         let pets = Sticker.detectPet(sourceImage: fetched.image)
-    
+
         guard let firstPet = pets.first else {
             return nil
         }
@@ -153,9 +173,8 @@ struct PhotosImporterSheetView: View {
         return allPhotos
     }
 
-    func getAllHightQualityImages(limit: Int? = nil) async -> [FetchedImage] {
+    func getAllHightQualityImages(of allPhotos: [Photo]) async -> [FetchedImage] {
         let size = 375*2
-        let allPhotos = await getPhotos(limit: limit)
         let totalUnitCount = allPhotos.count
         var images: [FetchedImage] = []
         var completedUnitCount: Int = 0
@@ -172,6 +191,25 @@ struct PhotosImporterSheetView: View {
                     }
                 }
             }
+        }
+    }
+}
+
+extension Array {
+    func chunked(by chunkSize: Int) -> [[Element]] {
+        return stride(from: 0, to: self.count, by: chunkSize).map {
+            Array(self[$0..<Swift.min($0 + chunkSize, self.count)])
+        }
+    }
+}
+
+extension Int {
+    func chunk(of size: Int = 200) -> [IndexSet] {
+        // Iterate over array, chunk it and convert to indexset
+        return Array(0...self).chunked(by: size).compactMap { chunk -> IndexSet? in
+            guard let first = chunk.first, let last = chunk.last else { return nil }
+//            print("first: \(first.description), last: \(last.description)")
+            return IndexSet(first..<last)
         }
     }
 }

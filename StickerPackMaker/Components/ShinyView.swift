@@ -38,12 +38,13 @@ struct ShinySticker: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .overlay {
+            .overlay(alignment: .center) {
                 Rectangle()
                     .fill(self.surface)
-                    .visualEffect { content, geometryProxy in
-                        return content.scaleEffect(10)
-                    }
+                    .scaleEffect(3)
+//                    .visualEffect { content, geometryProxy in
+//                        return content
+//                    }
                     .offset(self.position)
                     .opacity(0.3)
             }
@@ -53,10 +54,16 @@ struct ShinySticker: ViewModifier {
 
 #Preview {
     //    Image(.sticker)
-    Image(.nemo)
+    Image(uiImage: .nemo)
         .resizable()
         .scaledToFit()
-        .modifier(ShinySticker())
+        .shinySticker()
+        .mask {
+            Image(uiImage: .nemo)
+                .resizable()
+                .scaledToFit()
+        }
+
         .padding(20)
         .clipped()
         .clipShape(RoundedRectangle(cornerRadius: 50.0, style: .continuous))

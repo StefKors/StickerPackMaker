@@ -11,26 +11,6 @@ import Vision
 import UIKit
 import CoreGraphics
 
-extension UIImage {
-    func crop(to rect: CGRect) -> UIImage {
-        // Center crop the image
-        let sourceCGImage = self.cgImage!
-        let croppedCGImage = sourceCGImage.cropping(
-            to: rect
-        )!
-
-        // Use the cropped cgImage to initialize a cropped
-        // UIImage with the same image scale and orientation
-        return UIImage(
-            cgImage: croppedCGImage,
-            scale: self.imageRendererFormat.scale,
-            orientation: self.imageOrientation
-        )
-    }
-}
-
-
-
 @Model
 final class Sticker: Identifiable, Sendable {
 //    @Attribute(.unique) 
