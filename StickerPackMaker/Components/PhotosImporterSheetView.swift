@@ -130,11 +130,11 @@ struct PhotosImporterSheetView: View {
 
         let photos: [Photo] = assets.map { Photo(phAsset: $0) }
 
-        let images = await getAllHightQualityImages(of: photos)
+        let images = await ImagePipeline.getAllHightQualityImages(of: photos)
 
         var stickers: [Sticker] = []
         for image in images {
-            if let sticker = await parse(fetched: image) {
+            if let sticker = await ImagePipeline.parse(fetched: image) {
                 withAnimation(.snappy) {
                     stickersFound += 1
                 }
@@ -155,62 +155,6 @@ struct PhotosImporterSheetView: View {
             newContext.insert(sticker)
         }
         try? newContext.save()
-    }
-
-    func parse(fetched: FetchedImage) async -> Sticker? {
-        let pets = Sticker.detectPet(sourceImage: fetched.image)
-
-        guard let firstPet = pets.first else {
-            return nil
-        }
-        
-        let isolatedImage = StickerEffect.isolateSubject(fetched.image, subjectPosition: CGPoint(x: firstPet.rect.midX, y: firstPet.rect.midY))
-
-        guard let imageData = isolatedImage?.pngData() else {
-            return nil
-        }
-
-        return Sticker(
-            id: fetched.photo.identifier?.localIdentifier ?? UUID().uuidString,
-            imageData: imageData,
-            animals: pets
-        )
-    }
-
-    func getPhotos(limit: Int? = nil) async -> [Photo] {
-        var allPhotos: [Photo] = []
-        let options = PHFetchOptions()
-        if let limit {
-            options.fetchLimit = limit
-        }
-        let assets = PHAsset.fetchAssets(with: options)
-
-        assets.enumerateObjects { asset, _, _ in
-            allPhotos.append(Photo(phAsset: asset))
-        }
-
-        return allPhotos
-    }
-
-    func getAllHightQualityImages(of allPhotos: [Photo]) async -> [FetchedImage] {
-        let size = 375*2
-        let totalUnitCount = allPhotos.count
-        var images: [FetchedImage] = []
-        var completedUnitCount: Int = 0
-
-        return await withCheckedContinuation { continuation in
-            for photo in allPhotos {
-                photo.uiImage(targetSize: CGSize(width: size, height: size), contentMode: .default) { result  in
-                    if let getResult = try? result.get(), getResult.quality == .high {
-                        images.append(FetchedImage(image: getResult.value, photo: photo))
-                        completedUnitCount += 1
-                        if completedUnitCount == totalUnitCount {
-                            continuation.resume(returning: images)
-                        }
-                    }
-                }
-            }
-        }
     }
 }
 

@@ -12,6 +12,8 @@
 		8A161B4F2B016716007F9F57 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A161B4E2B016716007F9F57 /* Assets.xcassets */; };
 		8A161B522B016716007F9F57 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A161B512B016716007F9F57 /* Preview Assets.xcassets */; };
 		8A161B6A2B016F05007F9F57 /* PhotoLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A161B692B016F05007F9F57 /* PhotoLibrary.swift */; };
+		8A3607DF2B0E93D0004A38BC /* StickerPackMakerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3607DE2B0E93D0004A38BC /* StickerPackMakerTests.swift */; };
+		8A3607E62B0E9458004A38BC /* ImagePipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3607E52B0E9458004A38BC /* ImagePipeline.swift */; };
 		8A4F69FC2B07D13900EB7CED /* Gradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4F69FB2B07D13900EB7CED /* Gradient.swift */; };
 		8A4F69FE2B07D13D00EB7CED /* MotionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4F69FD2B07D13D00EB7CED /* MotionManager.swift */; };
 		8A4F6A002B07D14300EB7CED /* ShinyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4F69FF2B07D14300EB7CED /* ShinyView.swift */; };
@@ -27,6 +29,16 @@
 		D603028C2B0E6EBF0098872F /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = D603028B2B0E6EBF0098872F /* Algorithms */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		8A3607E02B0E93D0004A38BC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8A161B3D2B016715007F9F57 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8A161B442B016715007F9F57;
+			remoteInfo = StickerPackMaker;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		8A161B452B016715007F9F57 /* StickerPackMaker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StickerPackMaker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A161B482B016715007F9F57 /* StickerPackMakerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerPackMakerApp.swift; sourceTree = "<group>"; };
@@ -36,6 +48,9 @@
 		8A161B532B016716007F9F57 /* StickerPackMaker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StickerPackMaker.entitlements; sourceTree = "<group>"; };
 		8A161B542B016716007F9F57 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8A161B692B016F05007F9F57 /* PhotoLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibrary.swift; sourceTree = "<group>"; };
+		8A3607DC2B0E93D0004A38BC /* StickerPackMakerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StickerPackMakerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8A3607DE2B0E93D0004A38BC /* StickerPackMakerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerPackMakerTests.swift; sourceTree = "<group>"; };
+		8A3607E52B0E9458004A38BC /* ImagePipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePipeline.swift; sourceTree = "<group>"; };
 		8A4F69FB2B07D13900EB7CED /* Gradient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gradient.swift; sourceTree = "<group>"; };
 		8A4F69FD2B07D13D00EB7CED /* MotionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotionManager.swift; sourceTree = "<group>"; };
 		8A4F69FF2B07D14300EB7CED /* ShinyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShinyView.swift; sourceTree = "<group>"; };
@@ -59,6 +74,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8A3607D92B0E93D0004A38BC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -66,6 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				8A161B472B016715007F9F57 /* StickerPackMaker */,
+				8A3607DD2B0E93D0004A38BC /* StickerPackMakerTests */,
 				8A161B462B016715007F9F57 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -74,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				8A161B452B016715007F9F57 /* StickerPackMaker.app */,
+				8A3607DC2B0E93D0004A38BC /* StickerPackMakerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -114,8 +138,17 @@
 				8A7728A22B0787F20086D840 /* StickerLabelView.swift */,
 				8A556FD72B06A5020078DE03 /* StickersCollectionView.swift */,
 				8A7728A72B078AF50086D840 /* PhotosImporterSheetView.swift */,
+				8A3607E52B0E9458004A38BC /* ImagePipeline.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		8A3607DD2B0E93D0004A38BC /* StickerPackMakerTests */ = {
+			isa = PBXGroup;
+			children = (
+				8A3607DE2B0E93D0004A38BC /* StickerPackMakerTests.swift */,
+			);
+			path = StickerPackMakerTests;
 			sourceTree = "<group>";
 		};
 		8A7728A62B0788720086D840 /* SwiftDataModels */ = {
@@ -151,6 +184,24 @@
 			productReference = 8A161B452B016715007F9F57 /* StickerPackMaker.app */;
 			productType = "com.apple.product-type.application";
 		};
+		8A3607DB2B0E93D0004A38BC /* StickerPackMakerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8A3607E42B0E93D0004A38BC /* Build configuration list for PBXNativeTarget "StickerPackMakerTests" */;
+			buildPhases = (
+				8A3607D82B0E93D0004A38BC /* Sources */,
+				8A3607D92B0E93D0004A38BC /* Frameworks */,
+				8A3607DA2B0E93D0004A38BC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8A3607E12B0E93D0004A38BC /* PBXTargetDependency */,
+			);
+			name = StickerPackMakerTests;
+			productName = StickerPackMakerTests;
+			productReference = 8A3607DC2B0E93D0004A38BC /* StickerPackMakerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -163,6 +214,10 @@
 				TargetAttributes = {
 					8A161B442B016715007F9F57 = {
 						CreatedOnToolsVersion = 15.0;
+					};
+					8A3607DB2B0E93D0004A38BC = {
+						CreatedOnToolsVersion = 15.0;
+						TestTargetID = 8A161B442B016715007F9F57;
 					};
 				};
 			};
@@ -184,6 +239,7 @@
 			projectRoot = "";
 			targets = (
 				8A161B442B016715007F9F57 /* StickerPackMaker */,
+				8A3607DB2B0E93D0004A38BC /* StickerPackMakerTests */,
 			);
 		};
 /* End PBXProject section */
@@ -195,6 +251,13 @@
 			files = (
 				8A161B522B016716007F9F57 /* Preview Assets.xcassets in Resources */,
 				8A161B4F2B016716007F9F57 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8A3607DA2B0E93D0004A38BC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,6 +277,7 @@
 				8A7728A82B078AF50086D840 /* PhotosImporterSheetView.swift in Sources */,
 				8A7728A12B0787D30086D840 /* StickerView.swift in Sources */,
 				8A7728AA2B07A0BC0086D840 /* UtilityExtensions.swift in Sources */,
+				8A3607E62B0E9458004A38BC /* ImagePipeline.swift in Sources */,
 				8A161B6A2B016F05007F9F57 /* PhotoLibrary.swift in Sources */,
 				8A7728A32B0787F20086D840 /* StickerLabelView.swift in Sources */,
 				8A161B492B016715007F9F57 /* StickerPackMakerApp.swift in Sources */,
@@ -221,7 +285,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8A3607D82B0E93D0004A38BC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8A3607DF2B0E93D0004A38BC /* StickerPackMakerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8A3607E12B0E93D0004A38BC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8A161B442B016715007F9F57 /* StickerPackMaker */;
+			targetProxy = 8A3607E02B0E93D0004A38BC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		8A161B552B016716007F9F57 /* Debug */ = {
@@ -411,6 +491,42 @@
 			};
 			name = Release;
 		};
+		8A3607E22B0E93D0004A38BC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = RT5BSWJB4U;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.stefkors.StickerPackMakerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StickerPackMaker.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/StickerPackMaker";
+			};
+			name = Debug;
+		};
+		8A3607E32B0E93D0004A38BC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = RT5BSWJB4U;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.stefkors.StickerPackMakerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StickerPackMaker.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/StickerPackMaker";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -428,6 +544,15 @@
 			buildConfigurations = (
 				8A161B582B016716007F9F57 /* Debug */,
 				8A161B592B016716007F9F57 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8A3607E42B0E93D0004A38BC /* Build configuration list for PBXNativeTarget "StickerPackMakerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8A3607E22B0E93D0004A38BC /* Debug */,
+				8A3607E32B0E93D0004A38BC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

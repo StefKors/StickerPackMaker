@@ -32,23 +32,6 @@ final class Sticker: Identifiable, Sendable {
         self.imageData = imageData
         self.animals = animals
     }
-
-    static func detectPet(sourceImage: UIImage) -> [Pet] {
-        guard let image = sourceImage.cgImage else { return [] }
-        let inputImage = CIImage.init(cgImage: image)
-        let animalRequest = VNRecognizeAnimalsRequest()
-        let requestHandler = VNImageRequestHandler.init(ciImage: inputImage, options: [:])
-        try? requestHandler.perform([animalRequest])
-
-        let identifiers = animalRequest.results?.compactMap({ result in
-            if let name = result.labels.first {
-                return Pet(rect: result.boundingBox, name: name.identifier, confidence: CGFloat(result.confidence))
-            }
-            return nil
-        }).flatMap { $0 }
-
-        return identifiers ?? []
-    }
 }
 
 extension Sticker {
