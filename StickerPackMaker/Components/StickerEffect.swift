@@ -28,8 +28,8 @@ enum Background: String, Equatable, CaseIterable {
 }
 
 
-/// A class that produces and publishes the postprocessed output.
-final class StickerEffect {
+/// A namespace producing and publishing the postprocessed output.
+enum StickerEffect {
     // Refresh the pipeline and generate a new output.
     // TOOD: speedup this image processing
     static func isolateSubject(_ uiImage: UIImage?, subjectPosition: CGPoint? = nil) -> UIImage? {

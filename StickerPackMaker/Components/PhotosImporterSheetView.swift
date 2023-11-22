@@ -5,13 +5,13 @@
 //  Created by Stef Kors on 17/11/2023.
 //
 
-import SwiftUI
+import Algorithms
 import MediaCore
 import MediaSwiftUI
 import OSLog
-import SwiftData
 import Photos
-
+import SwiftData
+import SwiftUI
 import Vision
 
 fileprivate let logger = Logger(subsystem: "com.stefkors.StickerPackMaker", category: "PhotosImporterSheetView")
@@ -52,7 +52,7 @@ struct PhotosImporterSheetView: View {
                     // action
                     showProgressView = true
 
-                    Task.detached {
+                    Task.detached(priority: .userInitiated) {
                         await startImport()
                     }
                 } label: {
@@ -80,39 +80,39 @@ struct PhotosImporterSheetView: View {
     }
 
     func startImport() async {
-        let authorized = await PhotoLibrary.checkAuthorization()
-        guard authorized else {
+        guard await PhotoLibrary.checkAuthorization() else {
             logger.error("Photo library access was not authorized.")
             return
         }
 
         // Set limit to 2000 so it doesn't run out of memory...
+        isPresentingImporter = true
         await asyncImporter(limit: 2000)
         isPresentingImporter = false
     }
 
-    func asyncImporter(limit: Int? = nil) async {
+    func asyncImporter(limit: Int? = nil, chunksOf chunksCount: Int = 30) async {
         stickersFound = 0
         let options = PHFetchOptions()
         if let limit {
             options.fetchLimit = limit
         }
+
         let assets = PHAsset.fetchAssets(with: options)
-        let sets = assets.count.chunk(of: 30)
+        let sets = (0 ..< assets.count).chunks(ofCount: chunksCount).map { IndexSet($0) }
+
         print("number of sets \(sets.count)")
 
         for set in sets {
+            let assets = assets.objects(at: set)
             await runImportBatch(set: set, assets: assets)
         }
 
         print("end result = \(stickersFound)")
     }
 
-    func runImportBatch(set: IndexSet, assets: PHFetchResult<PHAsset>) async {
-        var photos: [Photo] = []
-        let _ = assets.enumerateObjects(at: set) { asset, _, _ in
-            photos.append(Photo(phAsset: asset))
-        }
+    func runImportBatch(set: IndexSet, assets: [PHAsset]) async {
+        let photos: [Photo] = assets.map { Photo(phAsset: $0) }
 
         let images = await getAllHightQualityImages(of: photos)
 
@@ -195,24 +195,24 @@ struct PhotosImporterSheetView: View {
     }
 }
 
-extension Array {
-    func chunked(by chunkSize: Int) -> [[Element]] {
-        return stride(from: 0, to: self.count, by: chunkSize).map {
-            Array(self[$0..<Swift.min($0 + chunkSize, self.count)])
-        }
-    }
-}
-
-extension Int {
-    func chunk(of size: Int = 200) -> [IndexSet] {
-        // Iterate over array, chunk it and convert to indexset
-        return Array(0...self).chunked(by: size).compactMap { chunk -> IndexSet? in
-            guard let first = chunk.first, let last = chunk.last else { return nil }
-//            print("first: \(first.description), last: \(last.description)")
-            return IndexSet(first..<last)
-        }
-    }
-}
+//extension Array {
+//    func chunked(by chunkSize: Int) -> [[Element]] {
+//        return stride(from: 0, to: self.count, by: chunkSize).map {
+//            Array(self[$0..<Swift.min($0 + chunkSize, self.count)])
+//        }
+//    }
+//}
+//
+//extension Int {
+//    func chunk(of size: Int = 200) -> [IndexSet] {
+//        // Iterate over array, chunk it and convert to indexset
+//        return Array(0...self).chunked(by: size).compactMap { chunk -> IndexSet? in
+//            guard let first = chunk.first, let last = chunk.last else { return nil }
+////            print("first: \(first.description), last: \(last.description)")
+//            return IndexSet(first..<last)
+//        }
+//    }
+//}
 
 struct FetchedImage {
     let image: UIImage

@@ -24,6 +24,7 @@
 		8A7728A52B0788600086D840 /* Sticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7728A42B0788600086D840 /* Sticker.swift */; };
 		8A7728A82B078AF50086D840 /* PhotosImporterSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7728A72B078AF50086D840 /* PhotosImporterSheetView.swift */; };
 		8A7728AA2B07A0BC0086D840 /* UtilityExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7728A92B07A0BC0086D840 /* UtilityExtensions.swift */; };
+		D603028C2B0E6EBF0098872F /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = D603028B2B0E6EBF0098872F /* Algorithms */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D603028C2B0E6EBF0098872F /* Algorithms in Frameworks */,
 				8A77289B2B0777F20086D840 /* MediaCore in Frameworks */,
 				8A77289D2B0777F20086D840 /* MediaSwiftUI in Frameworks */,
 			);
@@ -143,6 +145,7 @@
 			packageProductDependencies = (
 				8A77289A2B0777F20086D840 /* MediaCore */,
 				8A77289C2B0777F20086D840 /* MediaSwiftUI */,
+				D603028B2B0E6EBF0098872F /* Algorithms */,
 			);
 			productName = StickerPackMaker;
 			productReference = 8A161B452B016715007F9F57 /* StickerPackMaker.app */;
@@ -174,6 +177,7 @@
 			mainGroup = 8A161B3C2B016715007F9F57;
 			packageReferences = (
 				8A7728992B0777F20086D840 /* XCRemoteSwiftPackageReference "Media" */,
+				D603028A2B0E6EBF0098872F /* XCRemoteSwiftPackageReference "swift-algorithms" */,
 			);
 			productRefGroup = 8A161B462B016715007F9F57 /* Products */;
 			projectDirPath = "";
@@ -439,6 +443,14 @@
 				minimumVersion = 3.0.0;
 			};
 		};
+		D603028A2B0E6EBF0098872F /* XCRemoteSwiftPackageReference "swift-algorithms" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:apple/swift-algorithms.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -451,6 +463,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8A7728992B0777F20086D840 /* XCRemoteSwiftPackageReference "Media" */;
 			productName = MediaSwiftUI;
+		};
+		D603028B2B0E6EBF0098872F /* Algorithms */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D603028A2B0E6EBF0098872F /* XCRemoteSwiftPackageReference "swift-algorithms" */;
+			productName = Algorithms;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
