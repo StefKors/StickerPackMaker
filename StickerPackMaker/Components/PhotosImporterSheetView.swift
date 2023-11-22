@@ -113,15 +113,21 @@ struct PhotosImporterSheetView: View {
 
         print("number of sets \(sets.count)")
 
-        for set in sets {
-            let assets = assets.objects(at: set)
-            await runImportBatch(set: set, assets: assets)
+        await withTaskGroup(of: Void.self) { group in
+            for set in sets {
+                let assets = assets.objects(at: set)
+                group.addTask {
+                    await runImportBatch(set: set, assets: assets)
+                }
+            }
         }
 
         print("end result = \(stickersFound)")
     }
 
     func runImportBatch(set: IndexSet, assets: [PHAsset]) async {
+        print(#function)
+
         let photos: [Photo] = assets.map { Photo(phAsset: $0) }
 
         let images = await getAllHightQualityImages(of: photos)
