@@ -86,6 +86,8 @@ struct PhotosImporterSheetView: View {
                 .labelStyle(.iconOnly)
             }
         }
+        .animation(.snappy, value: stickersFound)
+        .animation(.snappy, value: imageCount)
     }
 
     func startImport() async {
@@ -100,7 +102,7 @@ struct PhotosImporterSheetView: View {
         isPresentingImporter = false
     }
 
-    func asyncImporter(limit: Int? = nil, chunksOf chunksCount: Int = 30) async {
+    func asyncImporter(limit: Int? = nil, chunksOf chunksCount: Int = 300) async {
         stickersFound = 0
         let options = PHFetchOptions()
         if let limit {
@@ -113,42 +115,33 @@ struct PhotosImporterSheetView: View {
 
         print("number of sets \(sets.count)")
 
-        await withTaskGroup(of: Void.self) { group in
-            for set in sets {
-                let assets = assets.objects(at: set)
-                group.addTask {
-                    await runImportBatch(set: set, assets: assets)
-                }
-            }
+        for set in sets {
+            let assets = assets.objects(at: set)
+            await runImportBatch(set: set, assets: assets)
         }
 
         print("end result = \(stickersFound)")
     }
 
     func runImportBatch(set: IndexSet, assets: [PHAsset]) async {
-        print(#function)
-
         let photos: [Photo] = assets.map { Photo(phAsset: $0) }
 
         let images = await ImagePipeline.getAllHightQualityImages(of: photos)
 
-        var stickers: [Sticker] = []
-        for image in images {
-            if let sticker = await ImagePipeline.parse(fetched: image) {
-                withAnimation(.snappy) {
-                    stickersFound += 1
-                }
-                stickers.append(sticker)
+        let stickers = images.compactMap { image in
+            let sticker = ImagePipeline.parse(fetched: image)
+            imageCount += 1
+            if sticker != nil {
+                stickersFound += 1
             }
-            withAnimation(.snappy) {
-                imageCount += 1
-            }
+            return sticker
         }
 
         bulkInsert(of: stickers)
     }
 
     func bulkInsert(of stickers: [Sticker]) {
+        print(#function)
         let newContext = ModelContext(modelContext.container)
         newContext.autosaveEnabled = false
         for sticker in stickers {

@@ -15,7 +15,7 @@ import SwiftUI
 import Vision
 
 enum ImagePipeline {
-    static func parse(fetched: FetchedImage) async -> Sticker? {
+    static func parse(fetched: FetchedImage) -> Sticker? {
         let pets = detectPet(sourceImage: fetched.image)
 
         guard let firstPet = pets.first else {
