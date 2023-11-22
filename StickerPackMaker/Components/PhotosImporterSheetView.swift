@@ -87,7 +87,7 @@ struct PhotosImporterSheetView: View {
         }
 
         // Set limit to 2000 so it doesn't run out of memory...
-        await asyncImporter(limit: 2000)
+        await asyncImporter(limit: 400)
         isPresentingImporter = false
     }
 
@@ -145,16 +145,17 @@ struct PhotosImporterSheetView: View {
             return nil
         }
         
-        let isolatedImage = StickerEffect.isolateSubject(fetched.image, subjectPosition: CGPoint(x: firstPet.rect.midX, y: firstPet.rect.midY))
+        let subject = StickerEffect.isolateSubject(fetched.image, subjectPosition: CGPoint(x: firstPet.rect.midX, y: firstPet.rect.midY))
 
-        guard let imageData = isolatedImage?.pngData() else {
+        guard let subject, let imageData = subject.image.pngData() else {
             return nil
         }
 
         return Sticker(
             id: fetched.photo.identifier?.localIdentifier ?? UUID().uuidString,
             imageData: imageData,
-            animals: pets
+            animals: pets,
+            path: subject.path
         )
     }
 

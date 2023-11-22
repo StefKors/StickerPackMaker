@@ -40,11 +40,11 @@ struct StickersCollectionView: View {
                             Image(uiImage: image)
                                 .resizable()
                                 .scaledToFit()
-//                                .background(alignment: .center) {
-//                                    ContourShape(path: path)
-//                                        .fill(.white)
-//                                        .stroke(.white, lineWidth: 4)
-//                                }
+                                .overlay(alignment: .center) {
+                                    if let path = sticker.path {
+                                        renderPath(path: path)
+                                    }
+                                }
 //                                .shinySticker()
                                 .matchedGeometryEffect(id: sticker.id, in: animation)
                                 .frame(width: Self.itemSize.width, height: Self.itemSize.height, alignment: .center)
@@ -74,18 +74,18 @@ struct StickersCollectionView: View {
                     Image(uiImage: image)
                         .resizable()
                         .scaledToFit()
-//                        .background(alignment: .center) {
-//                                ContourShape(path: path)
-//                                    .fill(.white)
-//                                    .stroke(.white, lineWidth: 4)
-//                        }
-
-                        .shinySticker()
-                        .mask {
-                            Image(uiImage: image)
-                                .resizable()
-                                .scaledToFit()
+                        .overlay(alignment: .center) {
+                            if let path = selectedSticker.path {
+                                renderPath(path: path)
+                            }
                         }
+
+//                        .shinySticker()
+//                        .mask {
+//                            Image(uiImage: image)
+//                                .resizable()
+//                                .scaledToFit()
+//                        }
                         
                         .matchedGeometryEffect(id: selectedSticker.id, in: animation)
                         .scenePadding()
@@ -108,6 +108,17 @@ struct StickersCollectionView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .statusBar(hidden: false)
+    }
+
+    func renderPath(path: CGPath) -> some View {
+        var canvas = Canvas { context, size in
+            context.stroke(
+                OutlinePathView.draw(path: path, in: CGRect(origin: .zero, size: size)),
+                with: .color(.green),
+                lineWidth: 4)
+        }
+        canvas.rendersAsynchronously = true
+        return canvas
     }
 }
 

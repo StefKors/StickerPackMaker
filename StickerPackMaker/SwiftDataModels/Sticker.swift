@@ -10,6 +10,7 @@ import SwiftData
 import Vision
 import UIKit
 import CoreGraphics
+import SwiftUI
 
 @Model
 final class Sticker: Identifiable, Sendable {
@@ -24,13 +25,29 @@ final class Sticker: Identifiable, Sendable {
 
     var animals: [Pet] = []
 
-//    @Attribute(.externalStorage)
+    @Attribute(.externalStorage)
     var pathData: Data?
 
-    init(id: String = UUID().uuidString, imageData: Data, animals: [Pet]) {
+    var path: CGPath? {
+        print("unarchive path")
+        if let data = self.pathData,
+           let path = try? NSKeyedUnarchiver.unarchivedObject(ofClass: UIBezierPath.self, from: data) {
+
+            return path.cgPath
+        }
+        return nil
+    }
+
+    init(id: String = UUID().uuidString, imageData: Data, animals: [Pet], path: CGPath? = nil) {
         self.id = id
         self.imageData = imageData
         self.animals = animals
+
+        if let path {
+            let path = UIBezierPath(cgPath: path)
+            let data = try? NSKeyedArchiver.archivedData(withRootObject: path, requiringSecureCoding: false)
+            self.pathData = data
+        }
     }
 
     static func detectPet(sourceImage: UIImage) -> [Pet] {

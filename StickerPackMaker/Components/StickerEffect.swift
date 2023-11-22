@@ -27,12 +27,17 @@ enum Background: String, Equatable, CaseIterable {
     case greenScreen = "Green Screen"
 }
 
+struct PetSubject {
+    let image: UIImage
+    let path: CGPath
+}
+
 
 /// A class that produces and publishes the postprocessed output.
 final class StickerEffect {
     // Refresh the pipeline and generate a new output.
     // TOOD: speedup this image processing
-    static func isolateSubject(_ uiImage: UIImage?, subjectPosition: CGPoint? = nil) -> UIImage? {
+    static func isolateSubject(_ uiImage: UIImage?, subjectPosition: CGPoint? = nil) -> PetSubject? {
         guard let uiImage, let data = uiImage.pngData(), let inputImage = CIImage(data: data) else {
             print("failed image")
             return nil
@@ -56,6 +61,9 @@ final class StickerEffect {
         // Render to UIImage
         let renderedImage = render(ciImage: composited)
 
+        print("boundingBox: \(contours.boundingBox.debugDescription)")
+//        renderedImage.cropping(to: contours.boundingBox)
+
         // Draw image contours
         let contouredImage = drawContours(path: contours, sourceImage: renderedImage)
 
@@ -70,7 +78,7 @@ final class StickerEffect {
             return nil
         }
 
-        return croppedImage
+        return PetSubject(image: croppedImage, path: contours)
     }
 }
 

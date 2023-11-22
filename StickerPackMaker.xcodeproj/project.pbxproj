@@ -24,6 +24,7 @@
 		8A7728A52B0788600086D840 /* Sticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7728A42B0788600086D840 /* Sticker.swift */; };
 		8A7728A82B078AF50086D840 /* PhotosImporterSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7728A72B078AF50086D840 /* PhotosImporterSheetView.swift */; };
 		8A7728AA2B07A0BC0086D840 /* UtilityExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7728A92B07A0BC0086D840 /* UtilityExtensions.swift */; };
+		8A8CBF912B0E1EC40086BDB6 /* ShapeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8CBF902B0E1EC40086BDB6 /* ShapeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +46,7 @@
 		8A7728A42B0788600086D840 /* Sticker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sticker.swift; sourceTree = "<group>"; };
 		8A7728A72B078AF50086D840 /* PhotosImporterSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosImporterSheetView.swift; sourceTree = "<group>"; };
 		8A7728A92B07A0BC0086D840 /* UtilityExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityExtensions.swift; sourceTree = "<group>"; };
+		8A8CBF902B0E1EC40086BDB6 /* ShapeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +114,7 @@
 				8A7728A22B0787F20086D840 /* StickerLabelView.swift */,
 				8A556FD72B06A5020078DE03 /* StickersCollectionView.swift */,
 				8A7728A72B078AF50086D840 /* PhotosImporterSheetView.swift */,
+				8A8CBF902B0E1EC40086BDB6 /* ShapeView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -207,6 +210,7 @@
 				8A4F6A002B07D14300EB7CED /* ShinyView.swift in Sources */,
 				8A556FDA2B06A83C0078DE03 /* StickerEffect.swift in Sources */,
 				8A7728A52B0788600086D840 /* Sticker.swift in Sources */,
+				8A8CBF912B0E1EC40086BDB6 /* ShapeView.swift in Sources */,
 				8A7728A82B078AF50086D840 /* PhotosImporterSheetView.swift in Sources */,
 				8A7728A12B0787D30086D840 /* StickerView.swift in Sources */,
 				8A7728AA2B07A0BC0086D840 /* UtilityExtensions.swift in Sources */,
