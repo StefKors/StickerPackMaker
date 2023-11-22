@@ -51,26 +51,15 @@ enum StickerEffect {
         }
 
         // Apply the visual effect and composite.
-        let composited = apply(mask: mask, to: inputImage)
+        let composited = apply(mask: mask, to: inputImage) //.cropped(to: scaledBox)
 
+        let scaledBox = contours.boundingBox.insetBy(dx: -inputImage.extent.width, dy: -inputImage.extent.height)
         // Render to UIImage
-        let renderedImage = render(ciImage: composited)
-
-        // Draw image contours
-        let contouredImage = drawContours(path: contours, sourceImage: renderedImage)
-
-        guard let contouredImageCG = contouredImage.cgImage else {
-            print("failed converting image to cgImage")
+        guard let renderedImage = render(ciImage: composited).cropping(to: scaledBox) else {
             return nil
         }
 
-        // Crop all transparent space around image
-        guard let croppedImage = contouredImageCG.cropAlpha(scale: uiImage.scale, orientation: uiImage.imageOrientation) else {
-            print("failed to crop image")
-            return nil
-        }
-
-        return croppedImage
+        return UIImage(cgImage: renderedImage)
     }
 }
 

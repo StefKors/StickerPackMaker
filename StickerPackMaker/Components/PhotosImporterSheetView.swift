@@ -30,6 +30,8 @@ struct PhotosImporterSheetView: View {
     @State private var progress: Progress = Progress()
     @State private var showProgressView: Bool = false
     @State private var stickersFound: Double = 0
+    @State private var imageCount: Double = 0
+    @State private var totalImagesCount: Double = 0
 
     var body: some View {
         VStack {
@@ -37,6 +39,13 @@ struct PhotosImporterSheetView: View {
                 HStack {
                     Text("Stickers Found: ")
                     Text(Int(stickersFound).description)
+                        .contentTransition(.numericText(value: stickersFound))
+                        .monospaced()
+                }
+
+                HStack {
+                    Text("Parse images: ")
+                    Text("\(Int(imageCount).description)/\(Int(totalImagesCount).description)")
                         .contentTransition(.numericText(value: stickersFound))
                         .monospaced()
                 }
@@ -87,7 +96,7 @@ struct PhotosImporterSheetView: View {
 
         // Set limit to 2000 so it doesn't run out of memory...
         isPresentingImporter = true
-        await asyncImporter(limit: 2000)
+        await asyncImporter()
         isPresentingImporter = false
     }
 
@@ -99,6 +108,7 @@ struct PhotosImporterSheetView: View {
         }
 
         let assets = PHAsset.fetchAssets(with: options)
+        totalImagesCount = Double(assets.count)
         let sets = (0 ..< assets.count).chunks(ofCount: chunksCount).map { IndexSet($0) }
 
         print("number of sets \(sets.count)")
@@ -123,6 +133,9 @@ struct PhotosImporterSheetView: View {
                     stickersFound += 1
                 }
                 stickers.append(sticker)
+            }
+            withAnimation(.snappy) {
+                imageCount += 1
             }
         }
 
