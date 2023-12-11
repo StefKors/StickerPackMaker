@@ -8,7 +8,7 @@
 import Photos
 import os.log
 
-class PhotoLibrary {
+enum PhotoLibrary {
     static func checkAuthorization() async -> Bool {
         switch PHPhotoLibrary.authorizationStatus(for: .readWrite) {
         case .authorized:
@@ -33,4 +33,3 @@ class PhotoLibrary {
 }
 
 fileprivate let logger = Logger(subsystem: "com.apple.swiftplaygroundscontent.capturingphotos", category: "PhotoLibrary")
-

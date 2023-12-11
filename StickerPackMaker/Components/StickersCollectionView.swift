@@ -36,103 +36,36 @@ struct StickersCollectionView: View {
             ScrollView {
                 LazyVGrid(columns: columns, spacing: Self.itemSpacing) {
                     ForEach(stickers) { sticker in
-                        if let image = sticker.image {
-                            Image(uiImage: image)
-                                .resizable()
-                                .scaledToFit()
-//                                .background(alignment: .center) {
-//                                    ContourShape(path: path)
-//                                        .fill(.white)
-//                                        .stroke(.white, lineWidth: 4)
-//                                }
-//                                .shinySticker()
-                                .matchedGeometryEffect(id: sticker.id, in: animation)
-                                .frame(width: Self.itemSize.width, height: Self.itemSize.height, alignment: .center)
-                                .onTapGesture {
-                                    withAnimation(.spring) {
-                                        selectedSticker = sticker
-                                        isShowingDetail.toggle()
-                                    }
+                        StickerView(sticker: sticker)
+                            .matchedGeometryEffect(id: sticker.id, in: animation)
+                            .frame(width: Self.itemSize.width, height: Self.itemSize.height, alignment: .center)
+                            .onTapGesture {
+                                withAnimation(.spring) {
+                                    selectedSticker = sticker
+                                    isShowingDetail.toggle()
                                 }
-                        }
-//                        StickerView(sticker: sticker)
-//                            .matchedGeometryEffect(id: sticker.id, in: animation)
-//                            .frame(width: Self.itemSize.width, height: Self.itemSize.height, alignment: .center)
-//                            .onTapGesture {
-//                                withAnimation(.spring) {
-//                                    selectedSticker = sticker
-//                                    isShowingDetail.toggle()
-//                                }
-//                            }
+                            }
                     }
                 }
                 .padding([.vertical], Self.itemSpacing)
             }
             .opacity(isShowingDetail ? 0 : 1)
 
-            if isShowingDetail, let selectedSticker, let image = selectedSticker.image {
-                    Image(uiImage: image)
-                        .resizable()
-                        .scaledToFit()
-//                        .background(alignment: .center) {
-//                                ContourShape(path: path)
-//                                    .fill(.white)
-//                                    .stroke(.white, lineWidth: 4)
-//                        }
-
-                        .shinySticker()
-                        .mask {
-                            Image(uiImage: image)
-                                .resizable()
-                                .scaledToFit()
+            if isShowingDetail, let selectedSticker {
+                StickerView(sticker: selectedSticker)
+                    .matchedGeometryEffect(id: selectedSticker.id, in: animation)
+                    .scenePadding()
+                    .onTapGesture {
+                        withAnimation(.spring) {
+                            isShowingDetail = false
                         }
-                        
-                        .matchedGeometryEffect(id: selectedSticker.id, in: animation)
-                        .scenePadding()
-                        .onTapGesture {
-                            withAnimation(.spring) {
-                                isShowingDetail = false
-                            }
-                        }
-
-
-//                StickerView(sticker: selectedSticker)
-//                    .matchedGeometryEffect(id: selectedSticker.id, in: animation)
-//                    .scenePadding()
-//                    .onTapGesture {
-//                        withAnimation(.spring) {
-//                            isShowingDetail = false
-//                        }
-//                    }
+                    }
             }
         }
         .navigationBarTitleDisplayMode(.inline)
         .statusBar(hidden: false)
     }
 }
-
-//@State private var isShowingDetail: Bool = false
-//@State private var selectedSticker: Sticker?
-//
-//var body: some View {
-//    ZStack {
-//        if isShowingDetail, let selectedSticker {
-//            StickerDetailView(sticker: selectedSticker)
-//        } else {
-//            ScrollView {
-//                LazyVGrid(columns: columns, spacing: Self.itemSpacing) {
-//                    ForEach(stickers) { sticker in
-//                        StickerLabelView(sticker: sticker)
-//                            .frame(width: Self.itemSize.width, height: Self.itemSize.height, alignment: .center)
-//                    }
-//                }
-//                .padding([.vertical], Self.itemSpacing)
-//            }
-//        }
-//    }
-//    .navigationBarTitleDisplayMode(.inline)
-//    .statusBar(hidden: false)
-//}
 
 #Preview {
     StickersCollectionView()
