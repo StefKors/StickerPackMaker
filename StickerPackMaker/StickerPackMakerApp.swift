@@ -9,8 +9,6 @@ import SwiftUI
 import SwiftData
 
 //        RENAME STICKY PET MAKER!!!!
-// VNDetectContoursRequest
-// TODO: Use the rect from the contours to crop the image
 
 @main
 struct StickerPackMakerApp: App {
