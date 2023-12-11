@@ -32,30 +32,27 @@ struct ContourShape: Shape {
 struct StickerView: View {
     let sticker: Sticker
 
+    @State private var stickerImage: UIImage?
+
     var body: some View {
         VStack {
             if let image = sticker.image {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFit()
-                    .background(alignment: .center) {
-//                        if let path = sticker.path {
-//                            ContourShape(path: path)
-//                                .fill(.white)
-//                                .stroke(.white, lineWidth: 4)
-////                                .shadow(radius: 12)
-//                                .id("contour-\(sticker.id)")
-//                        }
-                    }
+//                    .shinySticker()
+//                    .mask {
+//                        Image(uiImage: image)
+//                            .resizable()
+//                            .scaledToFit()
+//                    }
             } else {
-                Text("failed to load image")
-                    .foregroundStyle(.red)
+                ProgressView()
             }
         }
     }
 }
 
 #Preview {
-    @Namespace var animation
     return StickerView(sticker: .preview)
 }

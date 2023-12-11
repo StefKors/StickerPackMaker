@@ -13,6 +13,26 @@ import Photos
 import SwiftData
 import SwiftUI
 import Vision
+import CoreImage.CIFilterBuiltins
+
+struct StickerViewRenderer: View {
+    let image: UIImage
+    let path: CGPath
+
+    var body: some View {
+        Image(uiImage: image)
+            .resizable()
+            .scaledToFit()
+            .background(alignment: .center) {
+                ContourShape(path: path)
+                    .stroke(.white, lineWidth: 3)
+            }
+    }
+}
+
+import CoreImage
+
+
 
 enum ImagePipeline {
     static func parse(fetched: FetchedImage) -> Sticker? {
@@ -22,18 +42,96 @@ enum ImagePipeline {
             return nil
         }
 
-        let isolatedImage = isolateSubject(fetched.image, subjectPosition: CGPoint(x: firstPet.rect.midX, y: firstPet.rect.midY))
+        let subjectPosition = CGPoint(x: firstPet.rect.midX, y: firstPet.rect.midY)
 
-        guard let imageData = isolatedImage?.pngData() else {
+        guard let data = fetched.image.pngData(), let inputImage = CIImage(data: data) else {
+            print("failed image")
+            return nil
+        }
+
+        // Generate the input-image mask.
+        guard let mask = subjectMask(fromImage: inputImage, atPoint: subjectPosition) else {
+            print("failed mask")
+            return nil
+        }
+
+        // Get contours from masked image
+        guard let contours = contours(from: mask, orientation: fetched.image.imageOrientation) else {
+            print("failed to get contours")
+            return nil
+        }
+
+        // Apply the visual effect and composite.
+        let composited = apply(mask: mask, to: inputImage)
+
+
+        let fullRect = CGRect(origin: .zero, size: fetched.image.size)
+
+        let size = CGSize(
+            width: contours.boundingBox.width * fullRect.size.width,
+            height: contours.boundingBox.height * fullRect.size.height
+        )
+
+        let origin = CGPoint(
+            x: contours.boundingBox.minX * fullRect.size.width,
+            y: (1 - contours.boundingBox.maxY) * fullRect.size.height
+        )
+
+        let scaledBox = CGRect(origin: origin, size: size)
+
+        let imageWithContours = drawContoursWithMask(path: contours, sourceImage: render(ciImage: composited), croppedTo: scaledBox)
+
+        guard let imageData = imageWithContours.pngData() else {
             return nil
         }
 
         return Sticker(
-            id: fetched.photo.identifier?.localIdentifier ?? UUID().uuidString,
+            id: fetched.photo?.identifier?.localIdentifier ?? UUID().uuidString,
             imageData: imageData,
-            animals: pets
+            animals: pets,
+            contour: contours
         )
     }
+
+    // TODO Merge with drawContoursWithMask
+    static func imageWithImage(image: UIImage, croppedTo rect: CGRect) -> UIImage {
+        UIGraphicsBeginImageContext(rect.size)
+        let context = UIGraphicsGetCurrentContext()
+
+        let drawRect = CGRect(x: -rect.origin.x, y: -rect.origin.y,
+                              width: image.size.width, height: image.size.height)
+
+        context?.clip(to: CGRect(x: 0, y: 0,
+                                 width: rect.size.width, height: rect.size.height))
+
+        image.draw(in: drawRect)
+
+        let subImage = UIGraphicsGetImageFromCurrentImageContext()
+
+        UIGraphicsEndImageContext()
+        return subImage!
+    }
+
+    static func drawContoursWithMask(path: CGPath, sourceImage: CGImage, croppedTo: CGRect) -> UIImage {
+        let size = CGSize(width: sourceImage.width, height: sourceImage.height)
+        let lineWidth = 20.0 / CGFloat(size.width)
+        let renderer = UIGraphicsImageRenderer(size: size)
+
+        let renderedImage = renderer.image { (context) in
+            let renderingContext = context.cgContext
+            let flipVertical = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: 0, ty: size.height)
+            renderingContext.concatenate(flipVertical)
+            renderingContext.draw(sourceImage, in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+            renderingContext.scaleBy(x: size.width, y: size.height)
+            renderingContext.setLineWidth(lineWidth)
+            renderingContext.setStrokeColor(UIColor.white.cgColor)
+            renderingContext.addPath(path)
+            renderingContext.strokePath()
+        }
+
+        return imageWithImage(image: renderedImage, croppedTo: croppedTo.insetBy(dx: -(20), dy: -(20)))
+    }
+
 
     static func getPhotos(limit: Int? = nil) async -> [Photo] {
         var allPhotos: [Photo] = []
@@ -71,6 +169,12 @@ enum ImagePipeline {
         }
     }
 
+    static func write(cgimage: CGImage) -> Data? {
+        let cicontext = CIContext()
+        let ciimage = CIImage(cgImage: cgimage)
+        return cicontext.pngRepresentation(of: ciimage, format: .RGBA8, colorSpace: ciimage.colorSpace!)
+    }
+
     static func detectPet(sourceImage: UIImage) -> [Pet] {
         guard let image = sourceImage.cgImage else { return [] }
         let inputImage = CIImage.init(cgImage: image)
@@ -86,38 +190,6 @@ enum ImagePipeline {
         }).flatMap { $0 }
 
         return identifiers ?? []
-    }
-
-    // Refresh the pipeline and generate a new output.
-    // TOOD: speedup this image processing
-    static func isolateSubject(_ uiImage: UIImage?, subjectPosition: CGPoint? = nil) -> UIImage? {
-        guard let uiImage, let data = uiImage.pngData(), let inputImage = CIImage(data: data) else {
-            print("failed image")
-            return nil
-        }
-
-        // Generate the input-image mask.
-        guard let mask = subjectMask(fromImage: inputImage, atPoint: subjectPosition) else {
-            print("failed mask")
-            return nil
-        }
-
-        // Get contours from masked image
-        guard let contours = contours(from: mask, orientation: uiImage.imageOrientation) else {
-            print("failed to get contours")
-            return nil
-        }
-
-        // Apply the visual effect and composite.
-        let composited = apply(mask: mask, to: inputImage) //.cropped(to: scaledBox)
-
-        let scaledBox = contours.boundingBox.insetBy(dx: -inputImage.extent.width, dy: -inputImage.extent.height)
-        // Render to UIImage
-        guard let renderedImage = render(ciImage: composited).cropping(to: scaledBox) else {
-            return nil
-        }
-
-        return UIImage(cgImage: renderedImage)
     }
 
     static func drawContours(path: CGPath, sourceImage: CGImage) -> UIImage {
@@ -164,8 +236,6 @@ enum ImagePipeline {
             print("No contour observations found.")
             return nil
         }
-
-        print("contours \(result.contourCount)")
 
         return result.normalizedPath
     }

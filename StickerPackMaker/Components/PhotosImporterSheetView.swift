@@ -61,7 +61,7 @@ struct PhotosImporterSheetView: View {
                     // action
                     showProgressView = true
 
-                    Task.detached(priority: .userInitiated) {
+                    Task.detached(priority: .high) {
                         await startImport()
                     }
                 } label: {
@@ -98,7 +98,7 @@ struct PhotosImporterSheetView: View {
 
         // Set limit to 2000 so it doesn't run out of memory...
         isPresentingImporter = true
-        await asyncImporter()
+        await asyncImporter(limit: 40)
         isPresentingImporter = false
     }
 
@@ -115,12 +115,20 @@ struct PhotosImporterSheetView: View {
 
         print("number of sets \(sets.count)")
 
-        for set in sets {
-            let assets = assets.objects(at: set)
-            await runImportBatch(set: set, assets: assets)
-        }
+        let chunkSize = assets.count > 10 ? assets.count/10 : 1
 
-        print("end result = \(stickersFound)")
+        let batchedSets = sets.chunks(ofCount: chunkSize)
+
+        print("number of batches \(batchedSets.count) of size \(batchedSets.first?.count)")
+        for batch in batchedSets {
+            print("running batch")
+            await withTaskGroup(of: Void.self) { taskGroup in
+                for set in batch {
+                    let assets = assets.objects(at: set)
+                    taskGroup.addTask { await runImportBatch(set: set, assets: assets) }
+                }
+            }
+        }
     }
 
     func runImportBatch(set: IndexSet, assets: [PHAsset]) async {
@@ -151,28 +159,9 @@ struct PhotosImporterSheetView: View {
     }
 }
 
-//extension Array {
-//    func chunked(by chunkSize: Int) -> [[Element]] {
-//        return stride(from: 0, to: self.count, by: chunkSize).map {
-//            Array(self[$0..<Swift.min($0 + chunkSize, self.count)])
-//        }
-//    }
-//}
-//
-//extension Int {
-//    func chunk(of size: Int = 200) -> [IndexSet] {
-//        // Iterate over array, chunk it and convert to indexset
-//        return Array(0...self).chunked(by: size).compactMap { chunk -> IndexSet? in
-//            guard let first = chunk.first, let last = chunk.last else { return nil }
-////            print("first: \(first.description), last: \(last.description)")
-//            return IndexSet(first..<last)
-//        }
-//    }
-//}
-
 struct FetchedImage {
     let image: UIImage
-    let photo: Photo
+    let photo: Photo?
 }
 
 #Preview {
