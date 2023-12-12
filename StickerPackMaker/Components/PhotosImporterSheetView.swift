@@ -33,6 +33,11 @@ struct PhotosImporterSheetView: View {
     @State private var imageCount: Double = 0
     @State private var totalImagesCount: Double = 0
 
+    @State private var photoLimit = 50.0
+    @State private var isEditing = false
+
+    @State private var allImages: Double = 100
+
     var body: some View {
         VStack {
             if showProgressView {
@@ -51,12 +56,24 @@ struct PhotosImporterSheetView: View {
                 }
             } else {
                 VStack {
-                    Text("Search PhotoLibrary for Pet Stickers")
+                    Text("Search PhotoLibrary for \(Int(photoLimit).description)/\(Int(allImages).description) Pet Stickers")
                 }
                 .transition(.slide.animation(.bouncy))
+
+                Slider(
+                    value: $photoLimit,
+                    in: 0...(max(allImages, 100)),
+                    step: 10,
+                    onEditingChanged: { editing in
+                        isEditing = editing
+                    }
+                )
+                .padding()
             }
 
+
             HStack {
+
                 Button {
                     // action
                     showProgressView = true
@@ -88,6 +105,9 @@ struct PhotosImporterSheetView: View {
         }
         .animation(.snappy, value: stickersFound)
         .animation(.snappy, value: imageCount)
+        .task {
+            self.allImages = Double(PHAsset.fetchAssets(with: PHFetchOptions()).count)
+        }
     }
 
     func startImport() async {
@@ -98,7 +118,7 @@ struct PhotosImporterSheetView: View {
 
         // Set limit to 2000 so it doesn't run out of memory...
         isPresentingImporter = true
-        await asyncImporter(limit: 300)
+        await asyncImporter(limit: Int(photoLimit))
         isPresentingImporter = false
     }
 
@@ -111,7 +131,7 @@ struct PhotosImporterSheetView: View {
 
         let assets = PHAsset.fetchAssets(with: options)
         totalImagesCount = Double(assets.count)
-        let chunksCount = Int(totalImagesCount)/maxGroups
+//        let chunksCount = Int(totalImagesCount)/maxGroups
         let sets = (0 ..< assets.count).chunks(ofCount: 250).map { IndexSet($0) }
 
 //        print("number of sets \(sets.count) \(sets)")

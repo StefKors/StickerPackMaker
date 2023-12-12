@@ -86,7 +86,6 @@ extension CGImage {
 
 extension CGRect {
     func scaleToFit(rect: CGRect) -> CGRect {
-        let sourceRect = self
         let sourceWidth = self.width
         let sourceHeight = self.height
         let destWidth = rect.width
@@ -121,7 +120,6 @@ extension CGRect {
     }
 }
 
-
 enum ImagePipeline {
     static func parse(fetched: FetchedImage) -> Sticker? {
         let pets = detectPet(sourceImage: fetched.image)
@@ -149,11 +147,14 @@ enum ImagePipeline {
             return nil
         }
 
+
+
+        let fullRect = CGRect(origin: .zero, size: fetched.image.size).scaleToFit(rect: CGRect(origin: .zero, size: CGSize(width: 1200, height: 1200)))
+
         // Apply the visual effect and composite.
-        let composited = apply(mask: mask, to: inputImage)
-
-
-        let fullRect = CGRect(origin: .zero, size: fetched.image.size)
+        guard let composited = render(ciImage: apply(mask: mask, to: inputImage)).resize(size: fullRect.size) else {
+            return nil
+        }
 
         let size = CGSize(
             width: contours.boundingBox.width * fullRect.size.width,
@@ -167,7 +168,7 @@ enum ImagePipeline {
 
         let scaledBox = CGRect(origin: origin, size: size)
 
-        let imageWithContours = drawContoursWithMask(path: contours, sourceImage: render(ciImage: composited), croppedTo: scaledBox)
+        let imageWithContours = drawContoursWithMask(path: contours, sourceImage: composited, croppedTo: scaledBox)
 
         guard let imageData = imageWithContours.pngData() else {
             return nil
@@ -212,23 +213,25 @@ enum ImagePipeline {
 
     static func drawContoursWithMask(path: CGPath, sourceImage: CGImage, croppedTo: CGRect) -> UIImage {
         let size = CGSize(width: sourceImage.width, height: sourceImage.height)
-        let lineWidth = 20.0 / CGFloat(size.width)
-        print("lineWidth, \(lineWidth.description)")
+        let lineWidth =  0.02
         let renderer = UIGraphicsImageRenderer(size: size)
-
         let renderedImage = renderer.image { (context) in
             let renderingContext = context.cgContext
             let flipVertical = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: 0, ty: size.height)
             renderingContext.concatenate(flipVertical)
-            renderingContext.draw(sourceImage, in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+
             renderingContext.scaleBy(x: size.width, y: size.height)
             renderingContext.setLineWidth(lineWidth)
             renderingContext.setStrokeColor(UIColor.white.cgColor)
             renderingContext.addPath(path)
-            renderingContext.strokePath()
+            renderingContext.drawPath(using: .stroke)
+            renderingContext.saveGState()
+
+            renderingContext.draw(sourceImage, in: CGRect(x: 0, y: 0, width: 1, height: 1))
+            renderingContext.saveGState()
         }
 
-        return imageWithImage(image: renderedImage, croppedTo: croppedTo.insetBy(dx: -(20), dy: -(20)))
+        return imageWithImage(image: renderedImage, croppedTo: croppedTo.insetBy(dx: -(40), dy: -(40)))
     }
 
     
@@ -250,7 +253,7 @@ enum ImagePipeline {
     }
 
     static func getAllHightQualityImages(of allPhotos: [Photo]) async -> [FetchedImage] {
-        let size = 375*2
+        let size = 1200*2
         let totalUnitCount = allPhotos.count
         var images: [FetchedImage] = []
         var completedUnitCount: Int = 0

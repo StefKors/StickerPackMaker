@@ -18,6 +18,7 @@
 		8A4F69FE2B07D13D00EB7CED /* MotionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4F69FD2B07D13D00EB7CED /* MotionManager.swift */; };
 		8A4F6A002B07D14300EB7CED /* ShinyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4F69FF2B07D14300EB7CED /* ShinyView.swift */; };
 		8A556FD82B06A5020078DE03 /* StickersCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A556FD72B06A5020078DE03 /* StickersCollectionView.swift */; };
+		8A744C8F2B28B46100E27A93 /* UIBezierPath+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A744C8E2B28B46100E27A93 /* UIBezierPath+.swift */; };
 		8A77289B2B0777F20086D840 /* MediaCore in Frameworks */ = {isa = PBXBuildFile; productRef = 8A77289A2B0777F20086D840 /* MediaCore */; };
 		8A77289D2B0777F20086D840 /* MediaSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 8A77289C2B0777F20086D840 /* MediaSwiftUI */; };
 		8A7728A12B0787D30086D840 /* StickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7728A02B0787D30086D840 /* StickerView.swift */; };
@@ -54,6 +55,7 @@
 		8A4F69FD2B07D13D00EB7CED /* MotionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotionManager.swift; sourceTree = "<group>"; };
 		8A4F69FF2B07D14300EB7CED /* ShinyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShinyView.swift; sourceTree = "<group>"; };
 		8A556FD72B06A5020078DE03 /* StickersCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickersCollectionView.swift; sourceTree = "<group>"; };
+		8A744C8E2B28B46100E27A93 /* UIBezierPath+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBezierPath+.swift"; sourceTree = "<group>"; };
 		8A7728A02B0787D30086D840 /* StickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerView.swift; sourceTree = "<group>"; };
 		8A7728A22B0787F20086D840 /* StickerLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerLabelView.swift; sourceTree = "<group>"; };
 		8A7728A42B0788600086D840 /* Sticker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sticker.swift; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 		8A161B6F2B017320007F9F57 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				8A744C8E2B28B46100E27A93 /* UIBezierPath+.swift */,
 				8A4F69FF2B07D14300EB7CED /* ShinyView.swift */,
 				8A4F69FD2B07D13D00EB7CED /* MotionManager.swift */,
 				8A4F69FB2B07D13900EB7CED /* Gradient.swift */,
@@ -270,6 +273,7 @@
 				8A556FD82B06A5020078DE03 /* StickersCollectionView.swift in Sources */,
 				8A4F6A002B07D14300EB7CED /* ShinyView.swift in Sources */,
 				8A7728A52B0788600086D840 /* Sticker.swift in Sources */,
+				8A744C8F2B28B46100E27A93 /* UIBezierPath+.swift in Sources */,
 				8A7728A82B078AF50086D840 /* PhotosImporterSheetView.swift in Sources */,
 				8A7728A12B0787D30086D840 /* StickerView.swift in Sources */,
 				8A7728AA2B07A0BC0086D840 /* UtilityExtensions.swift in Sources */,
