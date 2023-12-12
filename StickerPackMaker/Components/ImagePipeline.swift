@@ -31,7 +31,95 @@ struct StickerViewRenderer: View {
 }
 
 import CoreImage
+import UIKit
+import AVFoundation
 
+public extension UIImage {
+    /// Resize image while keeping the aspect ratio. Original image is not modified.
+    /// - Parameters:
+    ///   - width: A new width in pixels.
+    ///   - height: A new height in pixels.
+    /// - Returns: Resized image.
+    func resize(_ width: Int, _ height: Int) -> UIImage {
+        // Keep aspect ratio
+        let maxSize = CGSize(width: width, height: height)
+
+        let availableRect = AVFoundation.AVMakeRect(
+            aspectRatio: self.size,
+            insideRect: .init(origin: .zero, size: maxSize)
+        )
+        let targetSize = availableRect.size
+
+        // Set scale of renderer so that 1pt == 1px
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        let renderer = UIGraphicsImageRenderer(size: targetSize, format: format)
+
+        // Resize the image
+        let resized = renderer.image { _ in
+            self.draw(in: CGRect(origin: .zero, size: targetSize))
+        }
+
+        return resized
+    }
+}
+
+extension CGImage {
+    func resize(size:CGSize) -> CGImage? {
+        let width: Int = Int(size.width)
+        let height: Int = Int(size.height)
+
+        let bytesPerPixel = self.bitsPerPixel / self.bitsPerComponent
+        let destBytesPerRow = width * bytesPerPixel
+
+
+        guard let colorSpace = self.colorSpace else { return nil }
+        guard let context = CGContext(data: nil, width: width, height: height, bitsPerComponent: self.bitsPerComponent, bytesPerRow: destBytesPerRow, space: colorSpace, bitmapInfo: self.alphaInfo.rawValue) else { return nil }
+
+        context.interpolationQuality = .high
+        context.draw(self, in: CGRect(x: 0, y: 0, width: width, height: height))
+
+        return context.makeImage()
+    }
+}
+
+
+extension CGRect {
+    func scaleToFit(rect: CGRect) -> CGRect {
+        let sourceRect = self
+        let sourceWidth = self.width
+        let sourceHeight = self.height
+        let destWidth = rect.width
+        let destHeight = rect.height
+
+        var outputWidth: CGFloat = 0
+        var outputHeight: CGFloat = 0
+        var outputX: CGFloat = 0
+        var outputY: CGFloat = 0
+
+        if (sourceWidth == 0 && sourceHeight == 0) {
+            // scale = Infinity;
+            outputWidth = 0;
+            outputHeight = 0;
+            outputX = destWidth / 2;
+            outputY = destHeight / 2;
+        } else if (destWidth * sourceHeight > destHeight * sourceWidth) {
+            //            scale = destHeight / sourceHeight;
+            outputWidth = sourceWidth * destHeight / sourceHeight;
+            outputHeight = destHeight;
+            outputX = (destWidth - outputWidth) / 2;
+            outputY = 0;
+        } else {
+            //            scale = destWidth / sourceWidth;
+            outputWidth = destWidth;
+            outputHeight = sourceHeight * destWidth / sourceWidth;
+            outputX = 0;
+            outputY = (destHeight - outputHeight) / 2;
+        }
+
+        return CGRect(x: outputX, y: outputY, width: outputWidth, height: outputHeight)
+    }
+}
 
 
 enum ImagePipeline {
@@ -112,9 +200,20 @@ enum ImagePipeline {
         return subImage!
     }
 
+    static func imageWithImage2(image: UIImage, croppedTo rect: CGRect) -> UIImage {
+        let renderedImage = UIGraphicsImageRenderer(size: rect.size).image { (context) in
+            let drawRect = CGRect(x: Int(-rect.origin.x), y: Int(-rect.origin.y), width: Int(image.size.width), height: Int(image.size.height))
+            context.clip(to: CGRect(x: 0, y: 0, width: rect.size.width, height: rect.size.height))
+            image.draw(in: drawRect)
+        }
+
+        return renderedImage
+    }
+
     static func drawContoursWithMask(path: CGPath, sourceImage: CGImage, croppedTo: CGRect) -> UIImage {
         let size = CGSize(width: sourceImage.width, height: sourceImage.height)
         let lineWidth = 20.0 / CGFloat(size.width)
+        print("lineWidth, \(lineWidth.description)")
         let renderer = UIGraphicsImageRenderer(size: size)
 
         let renderedImage = renderer.image { (context) in
@@ -131,6 +230,8 @@ enum ImagePipeline {
 
         return imageWithImage(image: renderedImage, croppedTo: croppedTo.insetBy(dx: -(20), dy: -(20)))
     }
+
+    
 
 
     static func getPhotos(limit: Int? = nil) async -> [Photo] {

@@ -98,11 +98,11 @@ struct PhotosImporterSheetView: View {
 
         // Set limit to 2000 so it doesn't run out of memory...
         isPresentingImporter = true
-        await asyncImporter(limit: 40)
+        await asyncImporter(limit: 300)
         isPresentingImporter = false
     }
 
-    func asyncImporter(limit: Int? = nil, chunksOf chunksCount: Int = 300) async {
+    func asyncImporter(limit: Int? = nil, maxGroups: Int = 6) async {
         stickersFound = 0
         let options = PHFetchOptions()
         if let limit {
@@ -111,22 +111,29 @@ struct PhotosImporterSheetView: View {
 
         let assets = PHAsset.fetchAssets(with: options)
         totalImagesCount = Double(assets.count)
-        let sets = (0 ..< assets.count).chunks(ofCount: chunksCount).map { IndexSet($0) }
+        let chunksCount = Int(totalImagesCount)/maxGroups
+        let sets = (0 ..< assets.count).chunks(ofCount: 250).map { IndexSet($0) }
 
-        print("number of sets \(sets.count)")
+//        print("number of sets \(sets.count) \(sets)")
 
-        let chunkSize = assets.count > 10 ? assets.count/10 : 1
+//        let chunkSize = assets.count > 10 ? assets.count/10 : 1
 
-        let batchedSets = sets.chunks(ofCount: chunkSize)
+//        for thing in sets[0] {
+//            thing
+//        }
+//        let batchedSets = sets.chunks(ofCount: chunkSize)
 
-        print("number of batches \(batchedSets.count) of size \(batchedSets.first?.count)")
-        for batch in batchedSets {
+//        print("number of batches \(batchedSets.count) of size \(batchedSets.first?.count) \(batchedSets)")
+        for batch in sets {
             print("running batch")
             await withTaskGroup(of: Void.self) { taskGroup in
-                for set in batch {
-                    let assets = assets.objects(at: set)
-                    taskGroup.addTask { await runImportBatch(set: set, assets: assets) }
-                }
+                let assets = assets.objects(at: batch)
+                taskGroup.addTask { await runImportBatch(set: batch, assets: assets) }
+//                for set in batch {
+//                    print(set.description)
+//                    let assets = assets.objects(at: set)
+//                    taskGroup.addTask { await runImportBatch(set: set, assets: assets) }
+//                }
             }
         }
     }
