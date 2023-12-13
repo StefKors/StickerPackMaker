@@ -40,6 +40,16 @@ struct StickerView: View {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFit()
+                    .visualEffect { content, geometryProxy in
+                        content
+                    }
+                    .background(alignment: .center) {
+                        GeometryReader { proxy in
+                            ContourShape(path: sticker.bezierPathContour.cgPath)
+                            // 4% frame border
+                                .stroke(.white, lineWidth: max(proxy.size.width, proxy.size.height) * 0.06)
+                        }
+                    }
 //                    .shinySticker()
 //                    .mask {
 //                        Image(uiImage: image)

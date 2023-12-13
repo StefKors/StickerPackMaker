@@ -168,9 +168,21 @@ enum ImagePipeline {
 
         let scaledBox = CGRect(origin: origin, size: size)
 
-        let imageWithContours = drawContoursWithMask(path: contours, sourceImage: composited, croppedTo: scaledBox)
+        var imageData: Data? = nil
 
-        guard let imageData = imageWithContours.pngData() else {
+        let addContourToImage = false
+        if addContourToImage {
+            let imageWithContours = drawContoursWithMask(path: contours, sourceImage: composited, croppedTo: scaledBox)
+            imageData = imageWithContours.pngData()
+        } else {
+            guard let cropped = composited.cropping(to: scaledBox) else {
+                return nil
+            }
+            imageData = write(cgimage: cropped)
+        }
+
+
+        guard let imageData else {
             return nil
         }
 
