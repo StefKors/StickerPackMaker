@@ -20,9 +20,9 @@
 </picture>
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="Images/ipados.svg">
-  <source media="(prefers-color-scheme: light)" srcset="Images/ipados-active.svg">
-  <img alt="ipados" src="Images/ipados-active.svg" height="24">
+  <source media="(prefers-color-scheme: dark)" srcset="Images/ipados-active.svg">
+  <source media="(prefers-color-scheme: light)" srcset="Images/ipados.svg">
+  <img alt="ipados" src="Images/ipados.svg" height="24">
 </picture>
 
 <picture>
