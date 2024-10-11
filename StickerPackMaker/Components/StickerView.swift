@@ -46,8 +46,9 @@ struct StickerView: View {
                     .background(alignment: .center) {
                         GeometryReader { proxy in
                             ContourShape(path: sticker.bezierPathContour.cgPath)
-                            // 4% frame border
-                                .stroke(.white, lineWidth: max(proxy.size.width, proxy.size.height) * 0.06)
+                            // % frame border
+                                .stroke(.white, lineWidth: max(proxy.size.width, proxy.size.height) * 0.1)
+                                .shadow(color: .black.opacity(0.2), radius: 10, x: 0.0, y: 0.0)
                         }
                     }
 //                    .shinySticker()

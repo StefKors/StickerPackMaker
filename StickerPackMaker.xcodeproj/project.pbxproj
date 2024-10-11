@@ -26,6 +26,10 @@
 		8A7728A52B0788600086D840 /* Sticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7728A42B0788600086D840 /* Sticker.swift */; };
 		8A7728A82B078AF50086D840 /* PhotosImporterSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7728A72B078AF50086D840 /* PhotosImporterSheetView.swift */; };
 		8A7728AA2B07A0BC0086D840 /* UtilityExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7728A92B07A0BC0086D840 /* UtilityExtensions.swift */; };
+		8A7ED6992B29F09D0056BD62 /* StickerSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7ED6982B29F09D0056BD62 /* StickerSheetView.swift */; };
+		8A7ED69B2B29F0C00056BD62 /* StickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7ED69A2B29F0C00056BD62 /* StickerSheet.swift */; };
+		8A7ED69D2B2A00E50056BD62 /* Modak.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8A7ED69C2B2A00E50056BD62 /* Modak.ttf */; };
+		8A7ED6AB2B2A18D00056BD62 /* MasonryVStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7ED6AA2B2A18D00056BD62 /* MasonryVStack.swift */; };
 		D603028C2B0E6EBF0098872F /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = D603028B2B0E6EBF0098872F /* Algorithms */; };
 /* End PBXBuildFile section */
 
@@ -61,6 +65,10 @@
 		8A7728A42B0788600086D840 /* Sticker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sticker.swift; sourceTree = "<group>"; };
 		8A7728A72B078AF50086D840 /* PhotosImporterSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosImporterSheetView.swift; sourceTree = "<group>"; };
 		8A7728A92B07A0BC0086D840 /* UtilityExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityExtensions.swift; sourceTree = "<group>"; };
+		8A7ED6982B29F09D0056BD62 /* StickerSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerSheetView.swift; sourceTree = "<group>"; };
+		8A7ED69A2B29F0C00056BD62 /* StickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerSheet.swift; sourceTree = "<group>"; };
+		8A7ED69C2B2A00E50056BD62 /* Modak.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Modak.ttf; sourceTree = "<group>"; };
+		8A7ED6AA2B2A18D00056BD62 /* MasonryVStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasonryVStack.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,9 +116,11 @@
 				8A161B482B016715007F9F57 /* StickerPackMakerApp.swift */,
 				8A161B4A2B016715007F9F57 /* ContentView.swift */,
 				8A7728A92B07A0BC0086D840 /* UtilityExtensions.swift */,
+				8A7ED6A12B2A0E650056BD62 /* Layouts */,
 				8A7728A62B0788720086D840 /* SwiftDataModels */,
 				8A161B6F2B017320007F9F57 /* Components */,
 				8A161B4E2B016716007F9F57 /* Assets.xcassets */,
+				8A7ED69E2B2A00EF0056BD62 /* Fonts */,
 				8A161B532B016716007F9F57 /* StickerPackMaker.entitlements */,
 				8A161B542B016716007F9F57 /* Info.plist */,
 				8A161B502B016716007F9F57 /* Preview Content */,
@@ -137,6 +147,7 @@
 				8A7728A02B0787D30086D840 /* StickerView.swift */,
 				8A7728A22B0787F20086D840 /* StickerLabelView.swift */,
 				8A556FD72B06A5020078DE03 /* StickersCollectionView.swift */,
+				8A7ED6982B29F09D0056BD62 /* StickerSheetView.swift */,
 				8A7728A72B078AF50086D840 /* PhotosImporterSheetView.swift */,
 				8A3607E52B0E9458004A38BC /* ImagePipeline.swift */,
 			);
@@ -155,8 +166,25 @@
 			isa = PBXGroup;
 			children = (
 				8A7728A42B0788600086D840 /* Sticker.swift */,
+				8A7ED69A2B29F0C00056BD62 /* StickerSheet.swift */,
 			);
 			path = SwiftDataModels;
+			sourceTree = "<group>";
+		};
+		8A7ED69E2B2A00EF0056BD62 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				8A7ED69C2B2A00E50056BD62 /* Modak.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		8A7ED6A12B2A0E650056BD62 /* Layouts */ = {
+			isa = PBXGroup;
+			children = (
+				8A7ED6AA2B2A18D00056BD62 /* MasonryVStack.swift */,
+			);
+			path = Layouts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -250,6 +278,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A161B522B016716007F9F57 /* Preview Assets.xcassets in Resources */,
+				8A7ED69D2B2A00E50056BD62 /* Modak.ttf in Resources */,
 				8A161B4F2B016716007F9F57 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -273,11 +302,14 @@
 				8A556FD82B06A5020078DE03 /* StickersCollectionView.swift in Sources */,
 				8A4F6A002B07D14300EB7CED /* ShinyView.swift in Sources */,
 				8A7728A52B0788600086D840 /* Sticker.swift in Sources */,
+				8A7ED6AB2B2A18D00056BD62 /* MasonryVStack.swift in Sources */,
 				8A744C8F2B28B46100E27A93 /* UIBezierPath+.swift in Sources */,
+				8A7ED6992B29F09D0056BD62 /* StickerSheetView.swift in Sources */,
 				8A7728A82B078AF50086D840 /* PhotosImporterSheetView.swift in Sources */,
 				8A7728A12B0787D30086D840 /* StickerView.swift in Sources */,
 				8A7728AA2B07A0BC0086D840 /* UtilityExtensions.swift in Sources */,
 				8A3607E62B0E9458004A38BC /* ImagePipeline.swift in Sources */,
+				8A7ED69B2B29F0C00056BD62 /* StickerSheet.swift in Sources */,
 				8A161B6A2B016F05007F9F57 /* PhotoLibrary.swift in Sources */,
 				8A7728A32B0787F20086D840 /* StickerLabelView.swift in Sources */,
 				8A161B492B016715007F9F57 /* StickerPackMakerApp.swift in Sources */,

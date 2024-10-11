@@ -132,7 +132,7 @@ struct PhotosImporterSheetView: View {
         let assets = PHAsset.fetchAssets(with: options)
         totalImagesCount = Double(assets.count)
 //        let chunksCount = Int(totalImagesCount)/maxGroups
-        let sets = (0 ..< assets.count).chunks(ofCount: 250).map { IndexSet($0) }
+        let sets = (0 ..< assets.count).chunks(ofCount: 50).map { IndexSet($0) }
 
 //        print("number of sets \(sets.count) \(sets)")
 
@@ -143,7 +143,7 @@ struct PhotosImporterSheetView: View {
 //        }
 //        let batchedSets = sets.chunks(ofCount: chunkSize)
 
-//        print("number of batches \(batchedSets.count) of size \(batchedSets.first?.count) \(batchedSets)")
+        print("number of sets \(sets.count) of size \(sets.first?.count)")
         for batch in sets {
             print("running batch")
             await withTaskGroup(of: Void.self) { taskGroup in

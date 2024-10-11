@@ -14,23 +14,25 @@ import SwiftData
 struct StickerPackMakerApp: App {
     var sharedModelContainer: ModelContainer = {
         BezierPathValueTransformer.register()
-
+        ColorValueTransformer.register()
+        
         let schema = Schema([
             Sticker.self,
+            StickerSheet.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
+        
         do {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
-
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+                ContentView()
+                    .modelContainer(sharedModelContainer)
         }
-        .modelContainer(sharedModelContainer)
     }
 }

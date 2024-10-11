@@ -24,7 +24,7 @@ struct StickerLabelView: View {
     }
 }
 
-#Preview {
-    @Namespace var animation
-    return StickerLabelView(sticker: .preview, animation: animation)
-}
+//#Preview {
+//    @Namespace var animation
+//    return StickerLabelView(sticker: .preview, animation: animation)
+//}

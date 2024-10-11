@@ -35,23 +35,12 @@ final class Sticker: Identifiable, Sendable {
         self.bezierPathContour = UIBezierPath(cgPath: contour)
     }
 }
+// UIImageValueTransformer
+//https://github.com/vedlai/OpenAISwiftDI/blob/bbab6666723ea5802bbb5d9f71b441341ccdf75d/Sources/OpenAISwiftDI/Files/Model/Domain/Extensions/UIImageExt.swift#L193
 
 extension Sticker {
     static let preview = Sticker(imageData: UIImage(resource: .nemo).pngData()!, animals: [.preview], contour: .preview)
 }
-
-//extension CGPath {
-//    func toData() -> Data? {
-//        let path = UIBezierPath(cgPath: self)
-//        return try? NSKeyedArchiver.archivedData(withRootObject: path, requiringSecureCoding: true)
-//    }
-//}
-//
-//extension Data {
-//    func toPath() -> CGPath? {
-//        try? NSKeyedUnarchiver.unarchivedObject(ofClass: UIBezierPath.self, from: self)?.cgPath
-//    }
-//}
 
 @objc(BezierPathValueTransformer)
 final class BezierPathValueTransformer: ValueTransformer {
@@ -64,26 +53,26 @@ final class BezierPathValueTransformer: ValueTransformer {
     }
 
     override public func transformedValue(_ value: Any?) -> Any? {
-        guard let path = value as? UIBezierPath else { return nil }
+        guard let path = value as? UIBezierPath else { return UIBezierPath(cgPath: .preview) }
 
         do {
             let data = try NSKeyedArchiver.archivedData(withRootObject: path, requiringSecureCoding: true)
             return data
         } catch {
-            assertionFailure("Failed to transform `UIColor` to `Data`")
-            return nil
+//            assertionFailure("Failed to transform `UIColor` to `Data`")
+            return UIBezierPath(cgPath: .preview)
         }
     }
 
     override public func reverseTransformedValue(_ value: Any?) -> Any? {
-        guard let data = value as? NSData else { return nil }
+        guard let data = value as? NSData else { return UIBezierPath(cgPath: .preview) }
 
         do {
             let path = try NSKeyedUnarchiver.unarchivedObject(ofClass: UIBezierPath.self, from: data as Data)
             return path
         } catch {
-            assertionFailure("Failed to transform `Data` to `UIColor`")
-            return nil
+//            assertionFailure("Failed to transform `Data` to `UIColor`")
+            return UIBezierPath(cgPath: .preview)
         }
     }
 }
